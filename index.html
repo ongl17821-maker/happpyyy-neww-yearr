@@ -93,7 +93,6 @@ html,body{margin:0;height:100%;background:var(--ink);color:var(--cream);overflow
 </div>
 
 <div id="hint"></div>
-
 <div id="bar">
   <button class="btn" id="mic">🎤 thổi bằng micro</button>
   <button class="btn" id="replay">↺ xem lại</button>
@@ -106,7 +105,7 @@ html,body{margin:0;height:100%;background:var(--ink);color:var(--cream);overflow
      https://ten-trang-cua-ban.netlify.app/?ten=Linh&ho=chị&xung=em&tuoi=25&gui=Nam )
    ══════════════════════════════════════════════════════════════════ */
 const CONFIG = {
-  ten:   '',      // tên người nhận — sẽ hiện thành chòm sao. Để trống = chòm sao hình trái tim
+  ten:   'Ngân Hà',      // tên người nhận — sẽ hiện thành chòm sao. Để trống = chòm sao hình trái tim
   ho:    'em',    // cách gọi người nhận: chị / anh / bạn / cậu / em ...
   xung:  'anh',   // cách bạn tự xưng: em / anh / mình / tớ ...
   tuoi:  0,       // tuổi mới (0 = không hiện)
@@ -135,20 +134,22 @@ const LIT_DONE = 4.8 + 0.3 * NEN + 0.5; // giây (trong cảnh bánh) khi tất 
 
 /* ---------- lời thoại theo nhịp nhạc (giây trong bài) ---------- */
 const FIN = 94;
+const INS0 = 49.4, INS_D = 19, DURS = 114.6; // cụm slide lời chúc riêng: bắt đầu ở giây 49.4, dài 19 giây
 // giây bắt đầu cảnh bánh sinh nhật (nằm cạnh hằng số FIN ở trên)
 const COPY = {
   start: 'chạm để bắt đầu',
-  startSub: 'các slide sẽ tự động chạy lần lượt…',
+  startSub: 'các slide sẽ tự động chạy lần lượt · bật âm thanh để nghe nhạc nhé  ♪',
   cues: [
-    { t: 2.4,  d: 6.2, pos: 'mid',  text: 'Hôm nay là một ngày thật đặc biệt, và anh muốn dành riêng cho em một chút niềm vui.' },
-    { t: 9.4,  d: 7.4, pos: 'mid',  text: 'Anh đã chuẩn bị món quà nhỏ này cùng vài lời chúc, mong rằng em sẽ thích nhé.' },
-    { t: 16.8, d: 5.0, pos: 'mid',  text: 'Trước khi gửi đến em những lời chúc, anh có đôi điều muốn nói…' },
-    { t: 33.0, d: 8.2, pos: 'low',  text: 'Thật ra anh với em cũng mới quen nhau chưa lâu, nên anh chưa biết nhiều điều về em. Nhưng qua những gì anh cảm nhận được, anh thấy em là một người khá dễ thương và dễ gần.' },
-    { t: 41.6, d: 7.6, pos: 'low',  text: 'Em còn có nét vui tính rất tự nhiên, khiến những câu chuyện dù đơn giản cũng trở nên gần gũi và thú vị hơn.' },
-    { t: 51.4, d: 6.6, pos: 'high', text: 'Anh mong em sẽ luôn giữ được nét đáng yêu, sự vui vẻ ấy và tự tin làm những điều mà em yêu thích.' },
-    { t: 58.2, d: 7.0, pos: 'high', text: 'Chúc em tuổi mới luôn xinh đẹp, bình an, gặp thật nhiều may mắn và làm gì cũng thuận lợi.' },
-    { t: 66.4, d: 8.4, pos: 'high', text: 'Mong những điều em mong muốn sẽ dần trở thành hiện thực, chuyện không vui sớm qua đi, còn những điều tốt đẹp sẽ ở lại thật lâu bên em.' },
-    { t: 77.4, d: 6.2, pos: 'mid',  text: 'Cảm ơn em vì đã mang đến những cuộc trò chuyện thật vui. Mong rằng sau này chúng ta vẫn sẽ tiếp tục đồng hành và có thêm nhiều kỷ niệm đẹp nhé.' }
+    { t: 2.4,  d: 6.2, pos: 'mid',  text: 'Hôm nay là một ngày đặc biệt hơn mọi ngày một chút.' },
+    { t: 9.4,  d: 7.4, pos: 'mid',  text: 'Vì hôm nay là sinh nhật của em, nên anh muốn chuẩn bị một món quà nhỏ dành riêng cho em.' },
+    { t: 16.8, d: 5.0, pos: 'mid',  text: 'Trước khi gửi lời chúc, anh muốn kể em nghe một chút về những điều anh cảm nhận được nhé…' },
+    { t: 28.6, d: 4.2, pos: 'low',  text: 'Tên em nghe giống cả một dải ngân hà vậy đó.' },
+    { t: 33.0, d: 8.2, pos: 'low',  text: 'Mặc dù anh và em mới quen nhau chưa lâu, anh vẫn chưa biết hết về em. Nhưng anh cảm nhận em là một người rất dễ thương và dễ gần.' },
+    { t: 41.6, d: 7.6, pos: 'low',  text: 'Em còn có nét vui tính, đáng yêu rất tự nhiên; đôi khi chỉ vài câu chuyện vu vơ cũng đủ làm không khí trở nên vui vẻ hơn.' },
+    { t: 51.4, d: 6.6, pos: 'high', text: 'Anh cũng quý sự cố gắng của em trong việc học. Mong em luôn giữ được sự nhiệt tình ấy, nhưng cũng nhớ nghỉ ngơi và chăm sóc bản thân nha.' },
+    { t: 58.2, d: 7.0, pos: 'high', text: 'Có thể món quà này không quá lớn lao, nhưng anh muốn ngày hôm nay của em có thêm một điều gì đó thật dễ thương và một niềm vui nho nhỏ.' },
+    { t: 66.4, d: 8.4, pos: 'high', text: 'Chúc em tuổi mới luôn vui vẻ, mạnh khỏe, xinh xắn; học tập thuận lợi, gặp nhiều may mắn và từng bước chạm đến những điều em mong muốn.' },
+    { t: 77.4, d: 6.2, pos: 'mid',  text: 'Mong em luôn được yêu thương, trân trọng; những ngày bình thường cũng có thật nhiều điều nhỏ xinh khiến em mỉm cười.' }
   ],
   wishes: ['mỗi ngày đều có lý do để mỉm cười', 'luôn bình yên trong lòng', 'học tập thật thuận lợi', 'gặp nhiều may mắn',
            'được yêu thương và trân trọng', 'giữ mãi nét đáng yêu', 'mọi ước mơ dần thành hiện thực', 'có thật nhiều khoảnh khắc đẹp'],
@@ -157,7 +158,7 @@ const COPY = {
   headline2: 'sinh nhật',
   wishHint: 'Ước một điều thật đẹp nhé, em…',
   blowHint: 'chạm vào màn hình để thổi nến',
-  final: 'Chúc em tuổi mới thật nhiều niềm vui, luôn xinh đẹp, bình an và giữ mãi nét dễ thương, vui tính của mình. Mong những điều em mong muốn sẽ dần trở thành hiện thực, mọi cố gắng đều được đền đáp và em luôn gặp được những người tử tế, chân thành. Cảm ơn em vì đã mang đến những cuộc trò chuyện vui vẻ và những khoảnh khắc thật dễ mến. Dù chúng ta mới quen nhau chưa lâu, anh mong rằng sau này vẫn sẽ có thêm nhiều dịp trò chuyện, đồng hành và cùng tạo nên những kỷ niệm đẹp. Sinh nhật vui vẻ nhé, cô gái đáng mến!'
+  final: 'Chúc em một tuổi mới thật nhiều niềm vui, luôn giữ được nét dễ thương, vui tính và nguồn năng lượng tích cực của mình. Mong em sẽ luôn gặp những điều tốt đẹp, mọi cố gắng đều được đền đáp và những ước mơ từng bước trở thành hiện thực. Dù chúng ta mới quen nhau chưa lâu, anh vẫn rất vui vì có cơ hội được gặp gỡ và trò chuyện cùng em. Cảm ơn em vì đã mang đến những khoảnh khắc vui vẻ và những câu chuyện thật đáng nhớ. Mong rằng chặng đường phía trước, chúng ta vẫn sẽ tiếp tục đồng hành, chia sẻ nhiều điều thú vị và có thêm thật nhiều kỷ niệm đẹp. Sinh nhật vui vẻ nhé, cô gái đáng mến! 💗'
 };
 
 /* ---------- tiện ích ---------- */
@@ -193,12 +194,12 @@ function beatPulse(t) {
 
 /* ---------- canvas ---------- */
 const cv = $('fx'), ctx = cv.getContext('2d');
-let W = 0, H = 0, U = 0, DPR = 1, dprCap = 2, dirtyCS = true, dirtyStars = true;
+let W = 0, H = 0, U = 0, DPR = 1, dprCap = 2, dirtyCS = true, dirtyStars = true, dirtyMW = true;
 function resize() {
   W = document.documentElement.clientWidth || innerWidth; H = innerHeight;
   DPR = Math.min(window.devicePixelRatio || 1, dprCap);
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-  U = Math.min(W, H); dirtyCS = true; dirtyStars = true;
+  U = Math.min(W, H); dirtyCS = true; dirtyStars = true; dirtyMW = true;
 }
 addEventListener('resize', resize); resize();
 
@@ -224,11 +225,20 @@ function sparkle(x, y, r, a, rot = 0) {
 /* ---------- trạng thái ---------- */
 const audio = $('song');
 const S = { started: false, finale: false, fClk: 0, blown: false, bClk: 0, audioFail: false, fbStart: 0, fbOff: 0,
-            muted: false, mic: null, micLvl: 0, bClkRel: 0, nextAuto: 0, lastAuto: 0, e: 0, b: 0, h: 0, bp: 0 };
+            mic: null, micLvl: 0, bClkRel: 0, nextAuto: 0, lastAuto: 0, e: 0, b: 0, h: 0, bp: 0 };
 let clk = 0, last = 0, lastTa = 0;
 const px = { x: 0, y: 0, tx: 0, ty: 0 };
 addEventListener('pointermove', e => { px.tx = (e.clientX / W - .5) * 2; px.ty = (e.clientY / H - .5) * 2; });
-const audioTime = () => !S.started ? 0 : S.audioFail ? (clk - S.fbStart) + S.fbOff : (audio.currentTime || 0);
+const ADUR = () => (isFinite(audio.duration) && audio.duration > 30) ? audio.duration : DURS;
+let aLoops = 0, aLastRaw = 0;
+const audioTime = () => {
+  if (!S.started) return 0;
+  if (S.audioFail) return (clk - S.fbStart) + S.fbOff;
+  const raw = audio.currentTime || 0;
+  if (raw < aLastRaw - 20) aLoops++;
+  aLastRaw = raw;
+  return raw + aLoops * ADUR();
+};
 
 /* ══════════ NỀN TRỜI ══════════ */
 const KEYS = [
@@ -411,10 +421,6 @@ function buildConstellation() {
       const near = pts.map((q, j) => [j, (q.tx - p.tx) ** 2 + (q.ty - p.ty) ** 2]).filter(a => a[0] !== i && a[1] < (sp * 1.9) ** 2).sort((a, b) => a[1] - b[1]).slice(0, 2);
       near.forEach(([j]) => { if (!CS.lines.some(l => (l[0] === i && l[1] === j) || (l[0] === j && l[1] === i))) CS.lines.push([i, j]); });
     });
-    const base = pts.length;
-    const hs = U * .15, hp = heartPoints(W / 2, oy + oh + hs * .75, hs, 36, 34.5, 39, r, 6); // trái tim nhỏ dưới tên
-    hp.forEach((p, i) => { pts.push(p); });
-    for (let i = 0; i < 36; i++) CS.lines.push([base + i, base + (i + 1) % 36]);
   }
   if (!TEN) { for (let i = 0; i < 74; i++) CS.lines.push([i, (i + 1) % 74]); for (let i = 74; i < pts.length; i++) { // sao bên trong nối nhẹ vào vòng ngoài
       let bi = 0, bd = 1e9; for (let j = 0; j < 74; j++) { const d = (pts[j].tx - pts[i].tx) ** 2 + (pts[j].ty - pts[i].ty) ** 2; if (d < bd) { bd = d; bi = j; } } if (r() < .5) CS.lines.push([i, bi]); } }
@@ -633,6 +639,251 @@ function drawCake(fT) {
   ctx.globalCompositeOperation = 'source-over';
 }
 
+/* ══════════ ✦ CẢNH MỚI 1 — DẢI NGÂN HÀ ══════════ */
+let MW = null;
+function buildMilkyWay() {
+  const sc = Math.min(.55, 1300 / Math.hypot(W, H)), L = Math.ceil(Math.hypot(W, H) * 1.18 * sc);
+  const c = document.createElement('canvas'); c.width = c.height = L; const x = c.getContext('2d'), r = mulberry(404);
+  const gauss = () => (r() + r() + r() + r() - 2) / 2;       // ~ -1..1, tập trung ở giữa
+  const bw = L * .13;                                          // nửa bề rộng dải
+  x.globalCompositeOperation = 'lighter';
+  const blob = (px, py, rad, col, a) => { const g = x.createRadialGradient(px, py, 0, px, py, rad); g.addColorStop(0, `rgba(${col},${a})`); g.addColorStop(1, `rgba(${col},0)`); x.fillStyle = g; x.fillRect(px - rad, py - rad, rad * 2, rad * 2); };
+  const cols = ['110,90,255', '255,110,175', '90,150,255', '255,170,110', '170,110,255'];
+  for (let i = 0; i < 70; i++) {   // mây tinh vân
+    const u = r(), px = L * (.04 + .92 * u), py = L / 2 + Math.sin(u * 5.2) * L * .035 + gauss() * bw * .75, core = 1 - Math.abs(u - .5) * 1.3;
+    blob(px, py, bw * (.7 + r() * 1.1), cols[Math.floor(r() * 5)], .09 + .09 * core * r());
+  }
+  for (let i = 0; i < 16; i++) blob(L * (.34 + r() * .32), L / 2 + gauss() * bw * .3, bw * (1 + r()), '255,206,150', .12 + r() * .09);  // lõi sáng ấm
+  blob(L * .5, L / 2, bw * 1.5, '255,226,190', .16);
+  // bụi sao li ti
+  const N = Math.round(7500 * (L / 900) ** 1.2);
+  for (let i = 0; i < N; i++) {
+    const u = r(), px = L * (.02 + .96 * u), py = L / 2 + Math.sin(u * 5.2) * L * .035 + gauss() * bw * (.35 + .9 * r() ** 2);
+    const core = 1 - Math.abs(u - .5) * 1.1, a = (.25 + .6 * r() * r()) * (.5 + core * .6), z = r() < .04 ? 2 : 1;
+    x.globalAlpha = Math.min(1, a); x.fillStyle = r() < .2 ? '#ffd9b0' : r() < .4 ? '#cdd8ff' : '#fff'; x.fillRect(px, py, z, z);
+  }
+  // vệt bụi tối cắt ngang dải
+  x.globalCompositeOperation = 'source-over';
+  for (let i = 0; i < 22; i++) {
+    const u = .08 + r() * .84, px = L * u, py = L / 2 + Math.sin(u * 5.2) * L * .035 + gauss() * bw * .25, rad = bw * (.25 + r() * .5);
+    const g = x.createRadialGradient(px, py, 0, px, py, rad); g.addColorStop(0, 'rgba(6,3,18,.5)'); g.addColorStop(1, 'rgba(6,3,18,0)');
+    x.save(); x.translate(px, py); x.scale(2.4 + r(), 1); x.translate(-px, -py); x.fillStyle = g; x.fillRect(px - rad, py - rad, rad * 2, rad * 2); x.restore();
+  }
+  // mép dải mờ dần theo chiều dọc
+  x.globalCompositeOperation = 'destination-in';
+  const m = x.createLinearGradient(0, 0, 0, L); m.addColorStop(0, 'rgba(0,0,0,0)'); m.addColorStop(.5, 'rgba(0,0,0,1)'); m.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = m; x.fillRect(0, 0, L, L);
+  const m2 = x.createLinearGradient(0, 0, L, 0); m2.addColorStop(0, 'rgba(0,0,0,0)'); m2.addColorStop(.12, 'rgba(0,0,0,1)'); m2.addColorStop(.88, 'rgba(0,0,0,1)'); m2.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = m2; x.fillRect(0, 0, L, L);
+  MW = { c, L, sc };
+}
+const MWSTARS = (() => { const r = mulberry(909); return Array.from({ length: 70 }, () => ({ u: r(), v: (r() - .5) * 2, s: 1 + r() * 2.2, ph: r() * TAU, f: .8 + r() * 2.4 })); })();
+function drawMilkyWay(T, dim = 1) {
+  const a = sstep(20.5, 28, T) * (1 - sstep(64, 74, T)) * dim; if (a <= .01) return;
+  if (dirtyMW || !MW) { buildMilkyWay(); dirtyMW = false; }
+  const k = easeOut(sstep(20, 38, T)), scl = lerp(1.3, 1, k) / MW.sc * 1;
+  const ang = -.5 + Math.sin(clk * .05) * .02 + px.x * .02 + (1 - k) * .12;
+  ctx.save(); ctx.translate(W / 2 + px.x * -10, H * .46 + px.y * -8); ctx.rotate(ang); ctx.scale(scl, scl);
+  ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = Math.min(1, a * (1.15 + S.b * .25 + S.bp * .1));
+  ctx.drawImage(MW.c, -MW.L / 2, -MW.L / 2); ctx.restore();
+  // sao lấp lánh nằm trên dải
+  ctx.save(); ctx.translate(W / 2, H * .46); ctx.rotate(ang); ctx.globalCompositeOperation = 'lighter';
+  const half = MW.L / MW.sc * .5 * scl * MW.sc;   // nửa chiều dài ở toạ độ màn hình
+  for (const s of MWSTARS) {
+    const tw = .5 + .5 * Math.sin(clk * s.f + s.ph), sx = (s.u - .5) * MW.L * scl / MW.sc * MW.sc * 1.0, sy = s.v * MW.L * .13 * scl / MW.sc * MW.sc * .7;
+    glow(SP.white, sx, sy, s.s * 6 * (1 + S.bp * .6), a * tw * .75);
+  }
+  ctx.restore(); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+}
+
+/* ══════════ ✦ CẢNH MỚI 2 — MƯA SAO BĂNG ══════════ */
+const METEORS = (() => { const r = mulberry(1212); return Array.from({ length: 26 }, (_, k) => ({ ts: 56.5 + k * .52 + r() * .35, d: .9 + r() * .8, x: .2 + r() * .95, y: -.05 + r() * .4, len: .22 + r() * .3, ang: Math.PI * (.66 + r() * .1), col: r() < .4 ? '255,226,190' : r() < .7 ? '255,170,210' : '210,220,255' })); })();
+function drawMeteors(T) {
+  if (T < 56 || T > 72) return; ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+  const env = sstep(56, 58, T) * (1 - sstep(68, 72, T));
+  for (const m of METEORS) {
+    const age = (T - m.ts) / m.d; if (age < 0 || age > 1) continue;
+    const L = U * m.len, ex = Math.cos(m.ang), ey = Math.sin(m.ang), hx = W * m.x + ex * L * age * 2.2, hy = H * m.y + ey * L * age * 2.2, tx = hx - ex * L, ty = hy - ey * L, al = Math.sin(age * Math.PI) * env;
+    const g = ctx.createLinearGradient(tx, ty, hx, hy); g.addColorStop(0, `rgba(${m.col},0)`); g.addColorStop(1, `rgba(${m.col},.95)`);
+    ctx.globalAlpha = al; ctx.strokeStyle = g; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(hx, hy); ctx.stroke();
+    glow(SP.white, hx, hy, 16, al); glow(SP.gold, hx, hy, 34, al * .35);
+  }
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+}
+
+/* ══════════ ✦ CẢNH MỚI 3 — TRĂNG & CÁNH HOA BAY ══════════ */
+function drawMoon(T) {
+  const a = .8 * sstep(63, 71, T) * (1 - sstep(88, 94, T)); if (a <= .01 || S.finale) return;
+  const x = W * .78 + px.x * -6, y = H * (.3 - .03 * sstep(63, 90, T)) + px.y * -4, R = U * .105 * (1 + S.b * .03);
+  ctx.globalCompositeOperation = 'lighter';
+  glow(SP.warm, x, y, R * 7, a * .22 * (.85 + S.b * .3)); glow(SP.gold, x, y, R * 3.8, a * .4);
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = a * .92;
+  const g = ctx.createRadialGradient(x - R * .3, y - R * .3, R * .1, x, y, R); g.addColorStop(0, '#fffaf0'); g.addColorStop(.7, '#ffe9c4'); g.addColorStop(1, '#f2c98f');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R, 0, TAU); ctx.fill();
+  ctx.globalAlpha = a * .1; ctx.fillStyle = '#b98a54';
+  for (const [dx, dy, rr] of [[-.32, -.2, .2], [.25, .12, .26], [-.1, .38, .13], [.38, -.34, .1]]) { ctx.beginPath(); ctx.arc(x + dx * R, y + dy * R, rr * R, 0, TAU); ctx.fill(); }
+  ctx.globalAlpha = 1;
+}
+const PETALS = (() => { const r = mulberry(31); return Array.from({ length: 46 }, () => ({ x: r(), ph: r(), v: .035 + r() * .04, s: .012 + r() * .014, sw: .03 + r() * .06, w: .6 + r() * 1.4, rot: r() * TAU, hue: r() })); })();
+function drawPetals(T) {
+  const a = S.finale ? .6 : sstep(66, 74, T); if (a <= .01) return; const tp = S.finale ? clk + 100 : T;
+  for (const p of PETALS) {
+    const cyc = (tp * p.v + p.ph) % 1.25, y = (cyc - .12) * H, x = p.x * W + Math.sin(tp * p.w + p.ph * 9) * U * p.sw * 3 + cyc * W * .06, sz = p.s * U;
+    const flip = Math.cos(tp * p.w * 1.6 + p.rot), al = a * sstep(-.12, 0, cyc - .12) * (1 - sstep(1, 1.13, cyc)) * .85; if (al <= .01) continue;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(p.rot + Math.sin(tp * p.w) * .8); ctx.scale(1, .35 + .65 * Math.abs(flip)); ctx.globalAlpha = al;
+    const g = ctx.createLinearGradient(0, -sz, 0, sz); g.addColorStop(0, p.hue < .5 ? '#ffd1e2' : '#ffe3b8'); g.addColorStop(1, p.hue < .5 ? '#ff7fae' : '#ff9e8a');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, -sz); ctx.bezierCurveTo(sz * .9, -sz * .4, sz * .7, sz * .7, 0, sz); ctx.bezierCurveTo(-sz * .7, sz * .7, -sz * .9, -sz * .4, 0, -sz); ctx.fill(); ctx.restore();
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* ══════════ ✦ CHUYỂN CẢNH — vệt sáng quét ngang ══════════ */
+function drawSweep(T) {
+  if (S.finale) return;
+  for (const t0 of [20.4, 55.6, 65.6, 83.6]) {
+    const k = (T - t0) / 1.9; if (k < 0 || k > 1) continue; const cx = lerp(-W * .3, W * 1.3, easeInOut(k)), wd = W * .28;
+    const g = ctx.createLinearGradient(cx - wd, 0, cx + wd, 0); g.addColorStop(0, 'rgba(255,220,180,0)'); g.addColorStop(.5, 'rgba(255,230,200,.2)'); g.addColorStop(1, 'rgba(255,220,180,0)');
+    ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = Math.sin(k * Math.PI); ctx.fillStyle = g; ctx.fillRect(cx - wd, 0, wd * 2, H); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+  }
+}
+
+/* ══════════ ✦ CÁC SLIDE LỜI CHÚC RIÊNG — cùng ngôn ngữ "chòm sao" với cảnh Ngân Hà ══════════ */
+function heartXY(t) { return [16 * Math.pow(Math.sin(t), 3), -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))]; }
+function sweepK(k) {
+  if (k < 0 || k > 1) return; const cx = lerp(-W * .3, W * 1.3, easeInOut(k)), wd = W * .28;
+  const g = ctx.createLinearGradient(cx - wd, 0, cx + wd, 0); g.addColorStop(0, 'rgba(255,220,180,0)'); g.addColorStop(.5, 'rgba(255,235,210,.2)'); g.addColorStop(1, 'rgba(255,220,180,0)');
+  ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = Math.sin(k * Math.PI); ctx.fillStyle = g; ctx.fillRect(cx - wd, 0, wd * 2, H); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+}
+
+/* — slide 1: chòm sao trái tim (các ngôi sao bay về ghép thành hình, rồi tan lên trời) — */
+const CH = { pts: [], lines: [], key: '' };
+function buildHeartSlide() {
+  const r = mulberry(33), size = Math.min(W * .74, H * .4), cx = W / 2, cy = H * .6, pts = [], lines = [], N = 74;
+  for (let i = 0; i < N; i++) { const [hx, hy] = heartXY(i / N * TAU); pts.push({ tx: cx + hx * size / 32, ty: cy + hy * size / 32 + size * .04, ts: .1 + r() * 1.9, sz: 1.3 + r() * 1.5, ph: r() * TAU, ring: true }); }
+  for (let i = 0; i < 26; i++) { const a = r() * TAU, d = Math.sqrt(r()) * .72, [hx, hy] = heartXY(a); pts.push({ tx: cx + hx * d * size / 32, ty: cy + hy * d * size / 32 + size * .04, ts: .1 + r() * 1.9, sz: .8 + r(), ph: r() * TAU, ring: false }); }
+  for (let i = 0; i < N; i++) lines.push([i, (i + 1) % N]);
+  for (let i = N; i < pts.length; i++) { let bi = 0, bd = 1e9; for (let j = 0; j < N; j++) { const d = (pts[j].tx - pts[i].tx) ** 2 + (pts[j].ty - pts[i].ty) ** 2; if (d < bd) { bd = d; bi = j; } } if (r() < .55) lines.push([i, bi]); }
+  pts.forEach(p => { const a = r() * TAU, d = Math.max(W, H) * (.6 + r() * .4); p.sx = W / 2 + Math.cos(a) * d; p.sy = H / 2 + Math.sin(a) * d; p.dd = r(); });
+  CH.pts = pts; CH.lines = lines; CH.key = W + 'x' + H;
+}
+function drawHeartSlide(u, e) {
+  if (CH.key !== W + 'x' + H) buildHeartSlide();
+  const pts = CH.pts, pos = [], al = [], pulse = .75 + .5 * S.b + S.bp * .3;
+  ctx.globalCompositeOperation = 'lighter';
+  glow(SP.rose, W / 2, H * .6, U * 1.3, e * (.15 + S.b * .1)); glow(SP.gold, W / 2, H * .6, U * .7, e * .07);
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[i], f = easeOut(sstep(p.ts, p.ts + 2.4, u)), d = sstep(4.6 + p.dd * .8, 5.6 + p.dd * .8, u);
+    pos[i] = [lerp(p.sx, p.tx, f) - px.x * 8, lerp(p.sy, p.ty, f) - px.y * 6 - d * U * .3, f]; al[i] = f * (1 - d);
+  }
+  ctx.lineWidth = 1; ctx.lineCap = 'round'; ctx.strokeStyle = '#ffeacb';
+  for (const [a, b] of CH.lines) { const A = pos[a], B = pos[b], k = Math.min(A[2], B[2]); if (k < .9) continue; ctx.globalAlpha = Math.pow((k - .9) * 10, 2) * Math.min(al[a], al[b]) * .38 * pulse; ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); }
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[i], [x, y] = pos[i], tw = .7 + .3 * Math.sin(clk * 2.6 + p.ph);
+    glow(p.ring ? SP.gold : SP.white, x, y, (p.sz * 7 + S.bp * 7) * (.8 + tw * .3), al[i] * .85 * tw);
+    ctx.globalAlpha = al[i]; ctx.fillStyle = '#fffaf0'; const s = p.sz * (1 + S.bp * .6); ctx.fillRect(x - s / 2, y - s / 2, s, s);
+    if (p.sz > 2.4 && al[i] > .6) sparkle(x, y, p.sz * 3.4, al[i] * .55 * tw, clk * .2 + p.ph);
+  }
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+}
+
+/* — slide 2: bông hoa ánh sáng nở rộ, rồi tràn kín màn hình để chuyển cảnh — */
+const POLLEN = (() => { const r = mulberry(123); return Array.from({ length: 30 }, () => ({ dx: r() - .5, ph: r(), v: .1 + r() * .1, s: 3 + r() * 6, w: 1 + r() * 2 })); })();
+const FL_LAYERS = [[12, 1, 0, '255,160,200', '255,225,236'], [9, .72, .2, '255,190,212', '255,240,228'], [6, .46, .42, '255,226,200', '255,252,238']];
+function drawGlowLeaf(x, y, dir, L, a) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(dir, 1); ctx.rotate(-.75);
+  const g = ctx.createLinearGradient(0, 0, L, 0); g.addColorStop(0, `rgba(70,200,140,${.1 * a})`); g.addColorStop(1, `rgba(150,255,200,${.42 * a})`);
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(L * .25, -L * .36, L * .78, -L * .32, L, 0); ctx.bezierCurveTo(L * .78, L * .3, L * .25, L * .32, 0, 0);
+  ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = `rgba(255,236,200,${.5 * a})`; ctx.lineWidth = 1; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(L * .9, 0); ctx.globalAlpha = .3 * a; ctx.stroke(); ctx.restore();
+}
+function drawFlower(lu, e) {
+  const cx = W / 2, base = H * .95, tipY = H * .56, R = Math.min(W * .2, H * .15);
+  const grow = easeOut(sstep(.2, 2.2, lu)), x = easeInOut(sstep(5.3, 7.0, lu)), hs = 1 + 9 * x * x, b0 = 1.9;
+  ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 1;
+  glow(SP.rose, cx, tipY, U * 1.1, e * .22 * sstep(2, 4, lu)); glow(SP.gold, cx, tipY, U * .6, e * .14 * sstep(2.5, 4.5, lu));
+  const ctrlX = cx + U * .07, ctrlY = (base + tipY) / 2, pt = t => { const a = 1 - t; return [a * a * cx + 2 * a * t * ctrlX + t * t * cx, a * a * base + 2 * a * t * ctrlY + t * t * tipY]; };
+  ctx.save(); ctx.translate(cx, base); ctx.rotate(Math.sin(clk * .9) * .02); ctx.translate(-cx, -base);
+  const sa = e * (1 - x);
+  ctx.strokeStyle = `rgba(190,240,205,${.7 * sa})`; ctx.lineWidth = Math.max(2, R * .04); ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(cx, base);
+  for (let i = 1; i <= 26; i++) { const p = pt(i / 26 * grow); ctx.lineTo(p[0], p[1]); } ctx.stroke();
+  for (const [tt, dir, dl] of [[.4, -1, .9], [.62, 1, 1.3]]) { const k = easeOut(sstep(dl, dl + 1.1, lu)); if (k > 0 && tt < grow) { const p = pt(tt); drawGlowLeaf(p[0], p[1], dir, R * .7 * k, sa); } }
+  const [hx, hy] = pt(grow);
+  FL_LAYERS.forEach(([n, ls, off, c1, c2], li) => {
+    for (let i = 0; i < n; i++) {
+      const k = easeOutBack(sstep(b0 + li * .45 + i * .06, b0 + 1.8 + li * .45 + i * .06, lu)); if (k <= 0) continue;
+      const L = R * ls * k * hs, w = L * .34;
+      ctx.save(); ctx.translate(hx, hy); ctx.rotate(i / n * TAU + off + clk * .04 * (li % 2 ? 1 : -1)); ctx.globalAlpha = e * (1 - .6 * x);
+      const g = ctx.createLinearGradient(0, 0, 0, -L); g.addColorStop(0, `rgba(${c2},.34)`); g.addColorStop(1, `rgba(${c1},.2)`);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(-w, -L * .33, -w * .8, -L * .95, 0, -L); ctx.bezierCurveTo(w * .8, -L * .95, w, -L * .33, 0, 0);
+      ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = 'rgba(255,232,196,.5)'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.globalAlpha = e * .22; ctx.beginPath(); ctx.moveTo(0, -L * .1); ctx.lineTo(0, -L * .8); ctx.stroke(); ctx.restore();
+    }
+  });
+  // nhuỵ: những chấm sáng xếp xoắn ốc
+  const ck = sstep(b0 + 1.2, b0 + 2.6, lu);
+  if (ck > 0) { glow(SP.gold, hx, hy, R * .8 * Math.min(hs, 2.2), e * ck * .26 * (1 - x));
+    for (let i = 0; i < 22; i++) { const a = i * 2.4, d = R * .2 * Math.sqrt(i / 22) * 1.6 * ck * (1 + (hs - 1) * .5); glow(SP.gold, hx + Math.cos(a) * d, hy + Math.sin(a) * d, 5, e * ck * .85 * (1 - x)); } }
+  ctx.restore();
+  // phấn hoa lấp lánh
+  const bl = sstep(b0 + 1, b0 + 2.6, lu) * (1 - x);
+  if (bl > 0) for (const p of POLLEN) { const t = ((lu - b0) * p.v + p.ph) % 1, px_ = hx + p.dx * U * .5 * t + Math.sin(lu * p.w + p.ph * 9) * 8, py_ = hy - t * U * .36; sparkle(px_, py_, p.s * .9 * (1 + S.bp * .4), e * bl * Math.sin(Math.PI * t) * .85, clk * .3 + p.ph); }
+  // ánh sáng ấm tràn ra khi hoa phủ kín màn hình
+  glow(SP.rose, hx, hy, U * 4.5, e * x * .28); glow(SP.warm, hx, hy, U * 3.2, e * x * .22);
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+}
+
+/* — slide 3: cỏ bốn lá bằng những ngôi sao nối nhau — cao trào — */
+const CLV = (() => { const out = []; for (let i = 0; i < 30; i++) { const [hx, hy] = heartXY(i / 30 * TAU); out.push([hx / 30, (hy - 17) / 30]); } return out; })();
+const ORB = (() => { const r = mulberry(555); return Array.from({ length: 14 }, () => ({ a: r() * TAU, sp: .2 + r() * .35, rad: 1.25 + r() * .5, s: 5 + r() * 7, ph: r() * TAU })); })();
+const BURST = (() => { const r = mulberry(808); return Array.from({ length: 44 }, () => ({ a: r() * TAU, v: .2 + r() * .4, s: 4 + r() * 7 })); })();
+function drawClover(lu, e) {
+  const cx = W / 2, cy = H * .53, R = Math.min(W * .3, H * .19), aura = sstep(1.5, 3.6, lu), ee = e * aura;
+  ctx.globalCompositeOperation = 'lighter';
+  glow(SP.gold, cx, cy, U * 1.0, ee * (.22 + S.b * .12)); glow(SP.violet, cx, cy, U * 1.2, e * .12);
+  // cuống mảnh
+  const gs = easeOut(sstep(.1, 1.4, lu)); ctx.globalAlpha = e * .8; ctx.strokeStyle = 'rgba(255,238,205,.55)'; ctx.lineWidth = 1.4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.quadraticCurveTo(cx - R * .1, cy + R * .9 * gs, cx - R * .45 * gs, cy + R * 1.55 * gs); ctx.stroke();
+  [-135, -45, 45, 135].forEach((deg, i) => {
+    const p = sstep(.4 + i * .5, 1.9 + i * .5, lu); if (p <= 0) return; const cnt = Math.floor(p * CLV.length);
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate((deg + 90) * Math.PI / 180);
+    const g = ctx.createLinearGradient(0, 0, 0, -R); g.addColorStop(0, 'rgba(30,150,80,.2)'); g.addColorStop(1, `rgba(70,205,125,${.55 * p * e})`);
+    ctx.globalAlpha = 1; ctx.beginPath(); for (let j = 0; j <= cnt && j < CLV.length; j++) { const q = CLV[j]; j ? ctx.lineTo(q[0] * R, q[1] * R) : ctx.moveTo(q[0] * R, q[1] * R); } if (p >= 1) ctx.closePath(); ctx.fillStyle = g; ctx.globalCompositeOperation = 'source-over'; ctx.fill(); ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = '#ffeacb'; ctx.lineWidth = 1; ctx.globalAlpha = e * .45 * (.75 + .5 * S.b); ctx.stroke();
+    ctx.globalAlpha = e * .25; ctx.beginPath(); ctx.moveTo(0, -R * .05); ctx.lineTo(0, -R * .72); ctx.stroke();
+    for (let j = 0; j < cnt && j < CLV.length; j++) { const q = CLV[j], tw = .7 + .3 * Math.sin(clk * 2.6 + j + i), big = j % 5 === 0;
+      glow(SP.gold, q[0] * R, q[1] * R, (big ? 11 : 7) * (1 + S.bp * .5) * tw, e * .85); ctx.globalAlpha = e; ctx.fillStyle = '#fffaf0'; const s = big ? 2.6 : 1.7; ctx.fillRect(q[0] * R - s / 2, q[1] * R - s / 2, s, s); }
+    ctx.restore();
+  });
+  const orbA = sstep(3.4, 5, lu) * e;
+  for (const o of ORB) { const a = o.a + clk * o.sp, rr = R * o.rad * (1 + .06 * Math.sin(clk * 1.3 + o.ph)); sparkle(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr * .85, o.s * (1 + S.bp * .3), orbA * (.4 + .5 * Math.sin(clk * 2.5 + o.ph) ** 2), clk * .25 + o.ph); }
+  // khoảnh khắc đủ bốn lá: một vòng sáng mảnh lan ra + bụi vàng bay lên
+  const age = lu - 3.6;
+  if (age > 0 && age < 3) {
+    const k = age / 3; ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffe2a0'; ctx.globalAlpha = (1 - k) * .5 * e; ctx.beginPath(); ctx.arc(cx, cy, easeOut(k) * U * .55, 0, TAU); ctx.stroke();
+    for (const p of BURST) { const d = p.v * (1 - Math.exp(-age * 1.5)) / 1.5 * U * 1.3; glow(SP.gold, cx + Math.cos(p.a) * d, cy + Math.sin(p.a) * d - age * U * .05, p.s, (1 - k) * e * .9); }
+  }
+  if (lu >= 3.6 && lu < 5.2 && !S.insBurst) {
+    S.insBurst = true; els.flash.style.transition = 'opacity .15s'; els.flash.style.opacity = .22;
+    setTimeout(() => { els.flash.style.transition = 'opacity 1.6s'; els.flash.style.opacity = 0; }, 160);
+    launch(.5, .22, 'willow', 42, 0); launch(.24, .3, 'peony', 48, .5); launch(.76, .3, 'peony', 330, .8);
+  }
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+}
+
+function drawInsert(u) {
+  if (u < -.2 || u > INS_D + .2) return;
+  const eA = sstep(0, .6, u) * (1 - sstep(5.6, 6.4, u)), eB = sstep(5.6, 6.6, u) * (1 - sstep(12.0, 13.0, u)), eC = sstep(12.0, 13.0, u) * (1 - sstep(INS_D - 1.0, INS_D, u));
+  if (eA > .01) drawHeartSlide(u, eA);
+  if (eC > .01) drawClover(u - 12.0, eC);
+  if (eB > .01) drawFlower(u - 5.6, eB);
+  for (const t0 of [.2, 5.2]) sweepK((u - t0) / 1.9);
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+}
+const INS_CUES = [
+  { t: .7,   d: 5.1, pos: 'high', text: 'Chúc em mỗi ngày đều có thật nhiều lý do để mỉm cười.' },
+  { t: 6.1,  d: 5.6, pos: 'high', text: 'Tặng em một bông hoa nhỏ, mong những ngày của em cũng rạng rỡ và nở rộ như thế.' },
+  { t: 12.6, d: 2.9, pos: 'high', text: 'Và đây là chiếc lá cỏ bốn lá anh muốn tặng em…' },
+  { t: 15.4, d: 3.6, pos: 'high', text: 'Chúc em thật nhiều may mắn và thành công trên mọi chặng đường phía trước.' }
+];
+
 /* ══════════ CHỮ (cues) ══════════ */
 const cuesEl = $('cues'), active = new Map();
 function fillRow(row, text, mode, i0) {
@@ -672,7 +923,7 @@ $('f-msg').textContent = fmt(cfg('loi') || COPY.final); $('f-sign').textContent 
 // đồng hồ dự phòng vẫn chạy; lần chạm tiếp theo sẽ thử mở nhạc lại tại đúng vị trí.
 function playAudioAt(targetTime) {
   const target = Math.max(0, Number.isFinite(targetTime) ? targetTime : audioTime());
-  try { audio.currentTime = target; } catch (e) {}
+  { const d = ADUR(); aLoops = Math.floor(target / d); aLastRaw = target - aLoops * d; try { audio.currentTime = aLastRaw; } catch (e) {} }
   audio.volume = .92; audio.loop = true;
   let promise;
   try { promise = audio.play(); }
@@ -709,7 +960,7 @@ function doBlow() {
 }
 function replay() {
   S.finale = false; S.blown = false; S.bClkRel = 0; FIN_CUES[0].off = false; els.fin.classList.remove('show'); els.replay.classList.remove('show'); els.mic.classList.remove('show'); els.hint.classList.remove('show');
-  rockets.length = 0; parts.length = 0; confetti.length = 0; try { audio.currentTime = 0; } catch (e) {} audio.volume = .92; S.fbStart = clk; S.fbOff = 0; if (audio.paused) audio.play().catch(() => {});
+  rockets.length = 0; parts.length = 0; confetti.length = 0; aLoops = 0; aLastRaw = 0; S.insBurst = false; try { audio.currentTime = 0; } catch (e) {} audio.volume = .92; S.fbStart = clk; S.fbOff = 0; if (audio.paused) audio.play().catch(() => {});
   lastBeatT = 0;
 }
 document.addEventListener('pointerdown', e => {
@@ -720,7 +971,6 @@ document.addEventListener('pointerdown', e => {
   if (S.finale) { doBlow(); return; }
 });
 els.replay.addEventListener('click', replay);
-
 els.mic.addEventListener('click', async () => {
   if (S.mic) return; els.mic.textContent = '🎤 đang xin quyền…';
   try {
@@ -747,9 +997,13 @@ function frame(now) {
   requestAnimationFrame(frame);
   const dt = Math.min(.1, (now - last) / 1000 || .016); last = now; clk += dt;
   fpsAcc += dt; fpsN++; if (fpsN === 90) { if (fpsAcc / fpsN > .028 && dprCap > 1) { dprCap = 1; resize(); } fpsAcc = 0; fpsN = 1e9; }
-  const ta = audioTime();
-  if (S.started && !S.finale && ta >= FIN) enterFinale();
-  const T = S.finale ? 1000 : ta, fT = S.finale ? clk - S.fClk : 0;
+  const taRaw = audioTime(), ta = taRaw % ADUR();   // taRaw: tổng thời gian đã chạy · ta: vị trí trong bài hát (dùng cho nhịp)
+  if (S.started && !S.finale && taRaw >= FIN + INS_D) enterFinale();
+  // cụm slide riêng: đồng hồ "cảnh cũ" (T) đứng yên ở INS0 trong lúc các slide mới chạy, rồi chạy tiếp
+  const inIns = S.started && !S.finale && taRaw >= INS0 && taRaw < INS0 + INS_D;
+  const T = S.finale ? 1000 : (taRaw < INS0 ? taRaw : inIns ? INS0 : taRaw - INS_D), fT = S.finale ? clk - S.fClk : 0;
+  const insDim = 1 - .55 * (S.finale ? 0 : sstep(INS0, INS0 + 1.5, taRaw) * (1 - sstep(INS0 + INS_D - 1.2, INS0 + INS_D, taRaw)));
+  if (taRaw < INS0 + 11) S.insBurst = false;
   // đặc trưng âm thanh (làm mượt)
   const ft = S.started ? feat(ta) : { e: 0, b: 0, h: 0 }, bp = S.started ? beatPulse(ta) : 0;
   S.e = lerp(S.e, ft.e, .3); S.b = lerp(S.b, ft.b, .3); S.h = lerp(S.h, ft.h, .3); S.bp = lerp(S.bp, bp, .5);
@@ -757,11 +1011,14 @@ function frame(now) {
   pollMic(dt);
   if (dirtyStars || !STARS.length) { makeStars(); dirtyStars = false; }
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  drawBackdrop(T); drawStars(T); drawShooting(T);
-  if (!S.finale) { drawIntro(T); drawConstellation(T); drawLanterns(T); }
+  drawBackdrop(T); drawStars(T); if (!inIns) drawShooting(T);
+  if (!S.finale) { drawMilkyWay(T, insDim); drawMeteors(T); drawMoon(T); }
+  if (!S.finale) { drawIntro(T); drawConstellation(taRaw); drawLanterns(T); }
   else drawPolarisKeep();
   const rib = S.finale ? .38 * (S.blown ? 1.2 : .8) : sstep(76, 84, T) * (1 - sstep(94, 96, T));
   drawRibbons(rib); drawGlints(S.finale ? .6 : sstep(78, 86, T));
+  drawPetals(T); drawSweep(T);
+  if (!S.finale) drawInsert(taRaw - INS0);
   if (!S.finale) drawRings(T, ta);
   // pháo hoa tự động theo nhịp ở cao trào
   if (!S.finale && T >= 85 && T < FIN - 1.5 && ta > lastTa && ta - lastTa < .5) {
@@ -776,7 +1033,7 @@ function frame(now) {
   }
   updateFireworks(dt); updateConfetti(dt);
   ctx.globalAlpha = 1;
-  if (!S.finale) updateCues(MAIN_CUES, T, 'm'); else { updateCues(MAIN_CUES, 9999, 'm'); updateCues(FIN_CUES, fT, 'f'); }
+  if (!S.finale) { updateCues(MAIN_CUES, T, 'm'); updateCues(INS_CUES, inIns ? taRaw - INS0 : -1, 'i'); } else { updateCues(MAIN_CUES, 9999, 'm'); updateCues(INS_CUES, -1, 'i'); updateCues(FIN_CUES, fT, 'f'); }
 }
 // công cụ kiểm thử (có thể bỏ qua)
 window.__bd = { S, blow: doBlow, burst: (xn, yn, t, h) => launch(xn, yn, t || 'peony', h || 330) };
