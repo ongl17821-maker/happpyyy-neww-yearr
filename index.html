@@ -74,12 +74,56 @@ html,body{margin:0;height:100%;background:var(--ink);color:var(--cream);overflow
 #start b{font-family:'Cormorant Garamond','Lora',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(26px,7vw,40px);color:var(--cream);
   text-shadow:0 0 22px rgba(255,196,140,.7);animation:breathe 2.6s ease-in-out infinite}
 #start small{margin-top:.7em;font-size:12.5px;font-weight:300;letter-spacing:.08em;color:rgba(255,243,226,.6)}
+
+/* ---------- LINH HỒN: đôi mắt thay người gửi ---------- */
+#soul{position:fixed;left:0;top:0;width:0;height:0;z-index:7;pointer-events:none;font-size:40px;--oL:0;--oR:0;--aL:0;--aR:0;--bl:0;--gx:0px;--gy:0px;--bob:0px;--gl:1;--bt:70px}
+#soul .bob{position:absolute;left:0;top:0;transform:translateY(var(--bob))}
+#soul .shaker{position:absolute;left:0;top:0}
+#soul .shaker.shake{animation:soulShake .55s ease-in-out}
+@keyframes soulShake{0%,100%{transform:none}18%{transform:translateX(-.09em) rotate(-5deg)}40%{transform:translateX(.09em) rotate(4deg)}62%{transform:translateX(-.05em) rotate(-2deg)}}
+#soul .eyes{position:absolute;left:0;top:0;display:flex;gap:.95em;transform:translate(-50%,-50%)}
+#soul .eye{position:relative;width:1em;height:1em;transform:translate(var(--gx),var(--gy))}
+#soul .eye.l{--o:var(--oL);--a:var(--aL)}
+#soul .eye.r{--o:var(--oR);--a:var(--aR)}
+#soul .sq{display:block;width:100%;height:100%;border-radius:.26em;background:#7ffcff;
+  box-shadow:0 0 calc(.34em*var(--gl)) calc(.09em*var(--gl)) rgba(0,255,255,.55),0 0 calc(.7em*var(--gl)) calc(.18em*var(--gl)) rgba(0,255,255,.3),inset 0 0 .3em rgba(255,255,255,.95);
+  transform:scaleY(calc(.06 + .94*var(--o)));opacity:calc(1 - var(--a))}
+#soul .arc{position:absolute;left:-.15em;top:.14em;width:1.3em;height:.73em;overflow:visible;opacity:var(--a);filter:drop-shadow(0 0 .22em #0ff)}
+#soul .arc path{fill:none;stroke:#7ffcff;stroke-width:19;stroke-linecap:round}
+#soul .blush{position:absolute;left:50%;top:108%;transform:translateX(-50%);font:700 .34em 'Courier New',Courier,monospace;letter-spacing:.07em;white-space:nowrap;
+  color:#ff5fa8;text-shadow:0 0 .5em rgba(255,255,255,.55),0 0 .8em rgba(255,105,180,.7);opacity:var(--bl)}
+#soul .mouth{position:absolute;left:50%;top:50%;width:.92em;height:.6em;overflow:visible;transform:translate(calc(-50% + var(--gx)*.4),calc(-50% + .5em + var(--gy)*.3));filter:drop-shadow(0 0 .12em #0ff)}
+#soul .mouth *{fill:none;stroke:#7ffcff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .15s}
+#soul[data-m="omega"] .m-omega,#soul[data-m="o"] .m-o,#soul[data-m="smile"] .m-smile,#soul[data-m="flat"] .m-flat{opacity:1}
+#soul .fx{position:absolute;left:0;top:0;font-weight:700;line-height:1;text-shadow:0 0 8px currentColor;animation:soulFx 1.8s ease-out forwards}
+@keyframes soulFx{0%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.4)}18%{opacity:1}100%{opacity:0;transform:translate(calc(var(--sx) + var(--dx)),calc(var(--sy) + var(--dy))) scale(1.15)}}
+#soul .bub{position:absolute;left:0;top:var(--bt);display:flex;align-items:center;gap:7px;white-space:nowrap;padding:8px 13px;
+  border:1px solid rgba(169,248,255,.43);border-radius:17px 17px 17px 5px;background:linear-gradient(135deg,rgba(10,31,53,.92),rgba(35,38,75,.9));
+  color:#e5ffff;font:700 14px/1.25 'Be Vietnam Pro',system-ui,sans-serif;text-shadow:0 0 8px rgba(104,246,255,.44);box-shadow:0 0 15px rgba(99,234,255,.15);
+  opacity:0;visibility:hidden;transform:translate(-50%,6px) scale(.94);transition:opacity .32s ease,transform .32s ease,visibility 0s .32s}
+#soul .bub.show{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1);transition:opacity .32s ease,transform .32s ease,visibility 0s}
+#soul .bub svg{width:17px;height:17px;color:#8ef8ff;animation:soulArrow 1.45s ease-in-out infinite}
+@keyframes soulArrow{0%,100%{transform:translateX(0);opacity:.72}50%{transform:translateX(5px);opacity:1}}
+#soul .dd b{display:inline-block;font-weight:700;animation:soulDot 1.2s infinite both}
+#soul .dd b:nth-child(2){animation-delay:.18s}#soul .dd b:nth-child(3){animation-delay:.36s}
+@keyframes soulDot{0%,60%,100%{opacity:.25;transform:none}30%{opacity:1;transform:translateY(-.22em)}}
 </style>
 </head>
 <body>
 
 <canvas id="fx"></canvas>
 <div class="vig"></div>
+<div id="soul" aria-hidden="true" data-m="flat">
+  <div class="bob"><div class="shaker" id="soul-sh">
+    <div class="eyes">
+      <div class="eye l"><i class="sq"></i><svg class="arc" viewBox="0 0 160 90"><path d="M24 66 Q80 2 136 66"/></svg><span class="blush">////</span></div>
+      <div class="eye r"><i class="sq"></i><svg class="arc" viewBox="0 0 160 90"><path d="M24 66 Q80 2 136 66"/></svg><span class="blush">////</span></div>
+      <svg class="mouth" viewBox="0 0 40 26"><path class="m-omega" d="M4 6 C4 20 17 21 20 10 C23 21 36 20 36 6"/><circle class="m-o" cx="20" cy="13" r="4.2"/><path class="m-smile" d="M7 7 Q20 24 33 7"/><path class="m-flat" d="M13 12 H27"/></svg>
+    </div>
+  </div></div>
+  <div class="bub" id="soul-bub"><span id="soul-bt"></span><i class="dd" id="soul-bd" hidden><b>.</b><b>.</b><b>.</b></i><svg id="soul-ba" viewBox="0 0 24 24" fill="none" hidden><path d="M4 12H19M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+</div>
+
 <div class="dim" id="dim"></div>
 <div class="flash" id="flash"></div>
 <div id="cues"></div>
@@ -97,7 +141,7 @@ html,body{margin:0;height:100%;background:var(--ink);color:var(--cream);overflow
   <button class="btn" id="mic">🎤 thổi bằng micro</button>
   <button class="btn" id="replay">↺ xem lại</button>
 </div>
-<div id="start"><b id="start-t"></b><small id="start-s"></small></div>
+<div id="start"><b id="start-t"></b></div>
 
 <script>
 /* ══════════════════════════════════════════════════════════════════
@@ -138,9 +182,8 @@ const INS0 = 49.4, INS_D = 19, DURS = 114.6; // cụm slide lời chúc riêng: 
 // giây bắt đầu cảnh bánh sinh nhật (nằm cạnh hằng số FIN ở trên)
 const COPY = {
   start: 'chạm để bắt đầu',
-  startSub: 'các slide sẽ tự động chạy lần lượt · bật âm thanh để nghe nhạc nhé  ♪',
   cues: [
-    { t: 2.4,  d: 6.2, pos: 'mid',  text: 'Hôm nay là một ngày đặc biệt hơn mọi ngày một chút.' },
+    { t: 2.4,  d: 6.2, pos: 'mid',  text: 'Hôm nay là một ngày rất đặc biệt.' },
     { t: 9.4,  d: 7.4, pos: 'mid',  text: 'Vì hôm nay là sinh nhật của em, nên anh muốn chuẩn bị một món quà nhỏ dành riêng cho em.' },
     { t: 16.8, d: 5.0, pos: 'mid',  text: 'Trước khi gửi lời chúc, anh muốn kể em nghe một chút về những điều anh cảm nhận được nhé…' },
     { t: 28.6, d: 4.2, pos: 'low',  text: 'Tên em nghe giống cả một dải ngân hà vậy đó.' },
@@ -762,24 +805,69 @@ function buildHeartSlide() {
   for (let i = 0; i < N; i++) lines.push([i, (i + 1) % N]);
   for (let i = N; i < pts.length; i++) { let bi = 0, bd = 1e9; for (let j = 0; j < N; j++) { const d = (pts[j].tx - pts[i].tx) ** 2 + (pts[j].ty - pts[i].ty) ** 2; if (d < bd) { bd = d; bi = j; } } if (r() < .55) lines.push([i, bi]); }
   pts.forEach(p => { const a = r() * TAU, d = Math.max(W, H) * (.6 + r() * .4); p.sx = W / 2 + Math.cos(a) * d; p.sy = H / 2 + Math.sin(a) * d; p.dd = r(); });
-  CH.pts = pts; CH.lines = lines; CH.key = W + 'x' + H;
+  CH.pts = pts; CH.lines = lines; CH.key = W + 'x' + H; CH.size = size; CH.cx = cx; CH.cy = cy;
+}
+/* — slide 1 (nâng cấp): trái tim được vẽ bằng hai sao băng, đập như nhịp tim, toả sóng sáng và thả những trái tim nhỏ bay lên — */
+const beatK = ph => Math.exp(-Math.pow((ph - .1) / .07, 2)) + .65 * Math.exp(-Math.pow((ph - .34) / .09, 2));
+const MINIH = (() => { const r = mulberry(909); return Array.from({ length: 18 }, () => ({ dx: r() - .5, v: .16 + r() * .14, ph: r(), s: 5 + r() * 8, sw: 1 + r() * 2, hue: r() })); })();
+function heartTrace(cx, cy, size, s, t0, t1, steps) {
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) { const [hx, hy] = heartXY(lerp(t0, t1, i / steps)); const x = cx + hx * size / 32 * s, y = cy + (hy * size / 32 + size * .04) * s; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+}
+function miniHeart(x, y, s, rot) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+  for (let i = 0; i <= 20; i++) { const [hx, hy] = heartXY(i / 20 * TAU); const X = hx * s / 17, Y = (hy - 2) * s / 17; i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }
+  ctx.closePath(); ctx.fill(); ctx.restore();
 }
 function drawHeartSlide(u, e) {
   if (CH.key !== W + 'x' + H) buildHeartSlide();
-  const pts = CH.pts, pos = [], al = [], pulse = .75 + .5 * S.b + S.bp * .3;
+  const size = CH.size, cx = CH.cx, cy = CH.cy, pts = CH.pts, pos = [], al = [];
+  const ox = -px.x * 8, oy = -px.y * 6, formed = sstep(2.7, 3.9, u), dis = sstep(4.6, 5.6, u), life = formed * (1 - dis);
+  const ph = (clk * .95) % 1, bt = beatK(ph) * life, sc = 1 + .055 * bt + .014 * S.bp * life, pulse = .75 + .5 * S.b + S.bp * .3;
   ctx.globalCompositeOperation = 'lighter';
-  glow(SP.rose, W / 2, H * .6, U * 1.3, e * (.15 + S.b * .1)); glow(SP.gold, W / 2, H * .6, U * .7, e * .07);
+  glow(SP.rose, cx, cy, U * 1.3, e * (.15 + S.b * .1 + bt * .12)); glow(SP.gold, cx, cy, U * .7, e * .07);
+  // ruột trái tim ửng hồng
+  if (life > .01) {
+    const g = ctx.createRadialGradient(cx + ox, cy + oy, size * .04, cx + ox, cy + oy, size * .62); g.addColorStop(0, `rgba(255,150,190,${.3 * life * e})`); g.addColorStop(1, 'rgba(255,110,170,0)');
+    heartTrace(cx + ox, cy + oy, size, sc, 0, TAU, 80); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+  }
+  // sóng sáng hình trái tim lan ra theo từng nhịp
+  if (life > .01) for (let j = 0; j < 2; j++) {
+    const k = (clk * .95 + j * .5) % 1; ctx.globalAlpha = (1 - k) * (1 - k) * .34 * life * e; ctx.strokeStyle = '#ffc6dc'; ctx.lineWidth = 1.3;
+    heartTrace(cx + ox, cy + oy, size, sc * (1 + easeOut(k) * .6), 0, TAU, 80); ctx.closePath(); ctx.stroke();
+  }
+  // hai ngôi sao băng cùng nhau vẽ nên trái tim, bắt đầu từ mũi nhọn
+  const g0 = easeInOut(sstep(.9, 3.6, u));
+  if (g0 > 0) for (const side of [-1, 1]) {
+    const tHead = Math.PI - side * g0 * Math.PI, tail = Math.PI;
+    ctx.globalAlpha = e * (1 - life * .65); ctx.strokeStyle = 'rgba(255,214,186,.35)'; ctx.lineWidth = 7; ctx.lineCap = 'round';
+    heartTrace(cx + ox, cy + oy, size, sc, tail, tHead, 50); ctx.stroke();
+    ctx.globalAlpha = e * (1 - life * .5); ctx.strokeStyle = '#fff1dc'; ctx.lineWidth = 1.8; heartTrace(cx + ox, cy + oy, size, sc, tail, tHead, 50); ctx.stroke();
+    if (g0 < 1) {
+      const [hx, hy] = heartXY(tHead), X = cx + ox + hx * size / 32 * sc, Y = cy + oy + (hy * size / 32 + size * .04) * sc;
+      glow(SP.white, X, Y, 34, e); glow(SP.rose, X, Y, 70, e * .5); sparkle(X, Y, 11, e, clk * 3);
+      for (let k = 1; k <= 7; k++) glow(SP.gold, X + Math.sin(clk * 9 + k * 5 + side) * 7, Y + k * 4.5, 8 - k * .7, e * (1 - k / 8) * .7);
+    }
+  }
+  // các ngôi sao nhỏ bay về ghép thành hình
   for (let i = 0; i < pts.length; i++) {
-    const p = pts[i], f = easeOut(sstep(p.ts, p.ts + 2.4, u)), d = sstep(4.6 + p.dd * .8, 5.6 + p.dd * .8, u);
-    pos[i] = [lerp(p.sx, p.tx, f) - px.x * 8, lerp(p.sy, p.ty, f) - px.y * 6 - d * U * .3, f]; al[i] = f * (1 - d);
+    const p = pts[i], f = easeOut(sstep(p.ts, p.ts + 2.4, u)), d = sstep(4.6 + p.dd * .8, 5.6 + p.dd * .8, u), k2 = lerp(1, sc, f);
+    const x0 = lerp(p.sx, p.tx, f) + ox * f, y0 = lerp(p.sy, p.ty, f) + oy * f;
+    pos[i] = [cx + (x0 - cx) * k2, cy + (y0 - cy) * k2 - d * U * .3, f]; al[i] = f * (1 - d);
   }
   ctx.lineWidth = 1; ctx.lineCap = 'round'; ctx.strokeStyle = '#ffeacb';
-  for (const [a, b] of CH.lines) { const A = pos[a], B = pos[b], k = Math.min(A[2], B[2]); if (k < .9) continue; ctx.globalAlpha = Math.pow((k - .9) * 10, 2) * Math.min(al[a], al[b]) * .38 * pulse; ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); }
+  for (const [a, b] of CH.lines) { const A = pos[a], B = pos[b], k = Math.min(A[2], B[2]); if (k < .9) continue; ctx.globalAlpha = Math.pow((k - .9) * 10, 2) * Math.min(al[a], al[b]) * .42 * pulse; ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); }
   for (let i = 0; i < pts.length; i++) {
     const p = pts[i], [x, y] = pos[i], tw = .7 + .3 * Math.sin(clk * 2.6 + p.ph);
-    glow(p.ring ? SP.gold : SP.white, x, y, (p.sz * 7 + S.bp * 7) * (.8 + tw * .3), al[i] * .85 * tw);
-    ctx.globalAlpha = al[i]; ctx.fillStyle = '#fffaf0'; const s = p.sz * (1 + S.bp * .6); ctx.fillRect(x - s / 2, y - s / 2, s, s);
+    glow(p.ring ? SP.gold : SP.white, x, y, (p.sz * 7 + S.bp * 7 + bt * 8) * (.8 + tw * .3), al[i] * .85 * tw);
+    ctx.globalAlpha = al[i]; ctx.fillStyle = '#fffaf0'; const s = p.sz * (1 + S.bp * .6 + bt * .5); ctx.fillRect(x - s / 2, y - s / 2, s, s);
     if (p.sz > 2.4 && al[i] > .6) sparkle(x, y, p.sz * 3.4, al[i] * .55 * tw, clk * .2 + p.ph);
+  }
+  // những trái tim nhỏ từ trong trái tim bay lên
+  const ma = sstep(2.8, 3.6, u) * (1 - sstep(4.9, 5.6, u)) * e;
+  if (ma > .01) for (const m of MINIH) {
+    const age = ((u - 2.8) * m.v + m.ph) % 1, x = cx + m.dx * size * .62 + Math.sin(age * 6 + m.sw * 3) * 10, y = cy + size * .12 - age * size * .95, a = Math.sin(Math.PI * age) * ma;
+    glow(SP.rose, x, y, m.s * 3.4, a * .5); ctx.globalAlpha = a * .95; ctx.fillStyle = m.hue < .5 ? '#ffc2d8' : '#ffe3b8'; miniHeart(x, y, m.s, Math.sin(clk * 1.4 + m.sw) * .35);
   }
   ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
 }
@@ -794,37 +882,80 @@ function drawGlowLeaf(x, y, dir, L, a) {
   ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = `rgba(255,236,200,${.5 * a})`; ctx.lineWidth = 1; ctx.stroke();
   ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(L * .9, 0); ctx.globalAlpha = .3 * a; ctx.stroke(); ctx.restore();
 }
+/* — slide 2 (nâng cấp): bông hoa nở rộ có tia sáng, bướm ánh sáng, đom đóm, cánh hoa rơi; rồi tràn kín màn hình — */
+const FLY = (() => { const r = mulberry(404); return Array.from({ length: 34 }, () => ({ x: r(), ph: r(), v: .035 + r() * .05, s: 3 + r() * 5, w: 1 + r() * 2 })); })();
+const BFLY = [{ r: 1.55, sp: .55, ph: 0, sz: .3, c: '255,150,200' }, { r: 2.1, sp: -.42, ph: 2.1, sz: .25, c: '255,214,140' }, { r: 1.2, sp: .72, ph: 4, sz: .22, c: '190,170,255' }];
+const FALLP = (() => { const r = mulberry(77); return Array.from({ length: 20 }, () => ({ a: r() * TAU, ts: 3.3 + r() * 2.3, rot: r() * TAU, w: 1 + r() * 2, s: .03 + r() * .03, hue: r() })); })();
+function drawButterfly(x, y, sz, flap, rot, col, a) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const f = .22 + .78 * Math.abs(Math.sin(flap));
+  for (const side of [-1, 1]) {
+    ctx.save(); ctx.scale(side * f, 1);
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(sz * .9, -sz * 1.0, sz * 1.6, -sz * .1, sz * .2, sz * .15); ctx.fillStyle = `rgba(${col},${.6 * a})`; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0, sz * .05); ctx.bezierCurveTo(sz * .9, sz * .1, sz * .9, sz * .95, sz * .1, sz * .6); ctx.fillStyle = `rgba(${col},${.42 * a})`; ctx.fill();
+    ctx.strokeStyle = `rgba(255,250,235,${.5 * a})`; ctx.lineWidth = .8; ctx.stroke(); ctx.restore();
+  }
+  ctx.fillStyle = `rgba(255,250,240,${.9 * a})`; ctx.fillRect(-.7, -sz * .3, 1.4, sz * .95); ctx.restore();
+  glow(SP.white, x, y, sz * 2.6, a * .35);
+}
 function drawFlower(lu, e) {
-  const cx = W / 2, base = H * .95, tipY = H * .56, R = Math.min(W * .2, H * .15);
-  const grow = easeOut(sstep(.2, 2.2, lu)), x = easeInOut(sstep(5.3, 7.0, lu)), hs = 1 + 9 * x * x, b0 = 1.9;
+  const cx = W / 2, base = H * .95, tipY = H * .56, R = Math.min(W * .26, H * .17);
+  const grow = easeOut(sstep(.2, 2.2, lu)), x = easeInOut(sstep(5.3, 7.0, lu)), hs = (1 + 9 * x * x) * (1 + .03 * S.bp * (1 - x)), b0 = 1.9;
   ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 1;
   glow(SP.rose, cx, tipY, U * 1.1, e * .22 * sstep(2, 4, lu)); glow(SP.gold, cx, tipY, U * .6, e * .14 * sstep(2.5, 4.5, lu));
+  // đom đóm bay lên từ mặt đất
+  for (const p of FLY) { const t = (lu * p.v * 2.2 + p.ph) % 1, fx = p.x * W + Math.sin(lu * p.w + p.ph * 9) * 14, fy = H * (1.04 - t * 1.08), a = Math.sin(Math.PI * t) * e * (.35 + .55 * Math.pow(Math.sin(clk * 3 + p.ph * 9), 2)) * sstep(.3, 1.5, lu) * (1 - x);
+    glow(SP.gold, fx, fy, p.s * 2.6, a); glow(SP.white, fx, fy, p.s * .9, a); }
   const ctrlX = cx + U * .07, ctrlY = (base + tipY) / 2, pt = t => { const a = 1 - t; return [a * a * cx + 2 * a * t * ctrlX + t * t * cx, a * a * base + 2 * a * t * ctrlY + t * t * tipY]; };
   ctx.save(); ctx.translate(cx, base); ctx.rotate(Math.sin(clk * .9) * .02); ctx.translate(-cx, -base);
   const sa = e * (1 - x);
   ctx.strokeStyle = `rgba(190,240,205,${.7 * sa})`; ctx.lineWidth = Math.max(2, R * .04); ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(cx, base);
   for (let i = 1; i <= 26; i++) { const p = pt(i / 26 * grow); ctx.lineTo(p[0], p[1]); } ctx.stroke();
-  for (const [tt, dir, dl] of [[.4, -1, .9], [.62, 1, 1.3]]) { const k = easeOut(sstep(dl, dl + 1.1, lu)); if (k > 0 && tt < grow) { const p = pt(tt); drawGlowLeaf(p[0], p[1], dir, R * .7 * k, sa); } }
+  for (const [tt, dir, dl] of [[.4, -1, .9], [.62, 1, 1.3]]) { const k = easeOut(sstep(dl, dl + 1.1, lu)); if (k > 0 && tt < grow) { const p = pt(tt); drawGlowLeaf(p[0], p[1], dir, R * .7 * k, sa); glow(SP.white, p[0] + dir * R * .32 * k, p[1] - R * .2 * k, 9, sa * k * (.4 + .4 * Math.sin(clk * 2.5 + dl))); } }
   const [hx, hy] = pt(grow);
+  // tia sáng xoay quanh bông hoa
+  const rayA = e * sstep(2.4, 4.2, lu) * (1 - x);
+  if (rayA > .01) for (let i = 0; i < 14; i++) {
+    const a = i / 14 * TAU + clk * .09, L = U * (.5 + .25 * Math.sin(i * 2.3 + clk * .6)), ex = Math.cos(a) * L, ey = Math.sin(a) * L, gr = ctx.createLinearGradient(hx, hy, hx + ex, hy + ey);
+    gr.addColorStop(0, `rgba(255,225,238,${.2 * rayA})`); gr.addColorStop(1, 'rgba(255,225,238,0)'); ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(hx, hy);
+    ctx.lineTo(hx + Math.cos(a - .045) * L, hy + Math.sin(a - .045) * L); ctx.lineTo(hx + Math.cos(a + .045) * L, hy + Math.sin(a + .045) * L); ctx.closePath(); ctx.fill();
+  }
   FL_LAYERS.forEach(([n, ls, off, c1, c2], li) => {
     for (let i = 0; i < n; i++) {
       const k = easeOutBack(sstep(b0 + li * .45 + i * .06, b0 + 1.8 + li * .45 + i * .06, lu)); if (k <= 0) continue;
       const L = R * ls * k * hs, w = L * .34;
       ctx.save(); ctx.translate(hx, hy); ctx.rotate(i / n * TAU + off + clk * .04 * (li % 2 ? 1 : -1)); ctx.globalAlpha = e * (1 - .6 * x);
-      const g = ctx.createLinearGradient(0, 0, 0, -L); g.addColorStop(0, `rgba(${c2},.34)`); g.addColorStop(1, `rgba(${c1},.2)`);
+      const g = ctx.createLinearGradient(0, 0, 0, -L); g.addColorStop(0, `rgba(${c2},.14)`); g.addColorStop(.55, `rgba(${c1},.26)`); g.addColorStop(1, `rgba(${c1},.34)`);
       ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(-w, -L * .33, -w * .8, -L * .95, 0, -L); ctx.bezierCurveTo(w * .8, -L * .95, w, -L * .33, 0, 0);
-      ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = 'rgba(255,232,196,.5)'; ctx.lineWidth = 1; ctx.stroke();
-      ctx.globalAlpha = e * .22; ctx.beginPath(); ctx.moveTo(0, -L * .1); ctx.lineTo(0, -L * .8); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = 'rgba(255,232,196,.55)'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.globalAlpha = e * .24; ctx.beginPath(); ctx.moveTo(0, -L * .1); ctx.lineTo(0, -L * .8); ctx.stroke();
+      if (k > .9 && x < .3) glow(SP.white, 0, -L * .96, 7 * (1 + S.bp * .5), e * (.35 + .35 * Math.sin(clk * 2.2 + i * 1.7 + li)));   // ánh lấp lánh ở đầu cánh
+      ctx.restore();
     }
   });
   // nhuỵ: những chấm sáng xếp xoắn ốc
   const ck = sstep(b0 + 1.2, b0 + 2.6, lu);
-  if (ck > 0) { glow(SP.gold, hx, hy, R * .8 * Math.min(hs, 2.2), e * ck * .26 * (1 - x));
+  if (ck > 0) { glow(SP.gold, hx, hy, R * .8 * Math.min(hs, 2.2), e * ck * .2 * (1 - x));
     for (let i = 0; i < 22; i++) { const a = i * 2.4, d = R * .2 * Math.sqrt(i / 22) * 1.6 * ck * (1 + (hs - 1) * .5); glow(SP.gold, hx + Math.cos(a) * d, hy + Math.sin(a) * d, 5, e * ck * .85 * (1 - x)); } }
   ctx.restore();
+  // vòng sáng lan ra lúc hoa nở trọn
+  for (const dl of [0, .28]) { const age = (lu - 4.6 - dl) / 2.2; if (age > 0 && age < 1) { ctx.globalAlpha = (1 - age) * .5 * e * (1 - x); ctx.strokeStyle = '#ffd6ea'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(hx, hy, easeOut(age) * U * .55, 0, TAU); ctx.stroke(); } }
   // phấn hoa lấp lánh
   const bl = sstep(b0 + 1, b0 + 2.6, lu) * (1 - x);
   if (bl > 0) for (const p of POLLEN) { const t = ((lu - b0) * p.v + p.ph) % 1, px_ = hx + p.dx * U * .5 * t + Math.sin(lu * p.w + p.ph * 9) * 8, py_ = hy - t * U * .36; sparkle(px_, py_, p.s * .9 * (1 + S.bp * .4), e * bl * Math.sin(Math.PI * t) * .85, clk * .3 + p.ph); }
+  // cánh hoa rơi nhẹ quanh bông hoa
+  const fa = e * (1 - x);
+  if (fa > .01) for (const p of FALLP) {
+    const age = lu - p.ts; if (age < 0 || age > 3) continue; const sz = U * p.s, X = hx + Math.cos(p.a) * age * R * .85 + Math.sin(age * p.w * 2) * 9, Y = hy + Math.sin(p.a) * age * R * .25 + age * age * R * .3 - age * R * .12;
+    const a = fa * sstep(0, .3, age) * (1 - sstep(1.8, 3, age)) * .85, fl = .35 + .65 * Math.abs(Math.cos(age * p.w * 3));
+    ctx.save(); ctx.translate(X, Y); ctx.rotate(p.rot + age * p.w); ctx.scale(1, fl); ctx.globalAlpha = a; ctx.fillStyle = p.hue < .5 ? '#ffc2da' : '#ffe0ba';
+    ctx.beginPath(); ctx.moveTo(0, -sz); ctx.bezierCurveTo(sz * .9, -sz * .4, sz * .7, sz * .7, 0, sz); ctx.bezierCurveTo(-sz * .7, sz * .7, -sz * .9, -sz * .4, 0, -sz); ctx.fill(); ctx.restore();
+  }
+  // bướm ánh sáng bay quanh hoa
+  const ba = sstep(3.6, 4.8, lu) * (1 - x) * e;
+  if (ba > .01) for (const b of BFLY) {
+    const an = clk * b.sp + b.ph, bx = hx + Math.cos(an) * R * b.r, by = hy - R * .25 + Math.sin(an * 1.3) * R * b.r * .55 + Math.sin(clk * 1.7 + b.ph) * R * .12;
+    drawButterfly(bx, by, R * b.sz, clk * 13 + b.ph * 5, Math.cos(an) * .5 * Math.sign(b.sp), b.c, ba);
+  }
   // ánh sáng ấm tràn ra khi hoa phủ kín màn hình
   glow(SP.rose, hx, hy, U * 4.5, e * x * .28); glow(SP.warm, hx, hy, U * 3.2, e * x * .22);
   ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
@@ -834,10 +965,28 @@ function drawFlower(lu, e) {
 const CLV = (() => { const out = []; for (let i = 0; i < 30; i++) { const [hx, hy] = heartXY(i / 30 * TAU); out.push([hx / 30, (hy - 17) / 30]); } return out; })();
 const ORB = (() => { const r = mulberry(555); return Array.from({ length: 14 }, () => ({ a: r() * TAU, sp: .2 + r() * .35, rad: 1.25 + r() * .5, s: 5 + r() * 7, ph: r() * TAU })); })();
 const BURST = (() => { const r = mulberry(808); return Array.from({ length: 44 }, () => ({ a: r() * TAU, v: .2 + r() * .4, s: 4 + r() * 7 })); })();
+/* — slide 3 (nâng cấp): cỏ bốn lá bằng sao nối nhau, lá lấp lánh, tia nắng vàng và mưa cỏ may mắn — */
+const LUCKY = (() => { const r = mulberry(612); return Array.from({ length: 24 }, () => ({ x: r(), ph: r(), v: .08 + r() * .07, s: .016 + r() * .016, rot: r() * TAU, w: 1 + r() * 2, hue: r() })); })();
+function miniClover(x, y, s, rot, a, hue) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  for (let k = 0; k < 4; k++) {
+    ctx.save(); ctx.rotate(k * Math.PI / 2); ctx.beginPath();
+    for (let i = 0; i <= 20; i++) { const [hx, hy] = heartXY(i / 20 * TAU); const X = hx * s / 26, Y = (hy - 17) * s / 26; i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }
+    ctx.closePath(); ctx.fillStyle = hue < .55 ? `rgba(120,235,165,${.8 * a})` : `rgba(255,228,150,${.8 * a})`; ctx.fill(); ctx.strokeStyle = `rgba(255,248,225,${.6 * a})`; ctx.lineWidth = .7; ctx.stroke(); ctx.restore();
+  }
+  ctx.restore(); glow(SP.gold, x, y, s * 2.8, a * .4);
+}
 function drawClover(lu, e) {
   const cx = W / 2, cy = H * .53, R = Math.min(W * .3, H * .19), aura = sstep(1.5, 3.6, lu), ee = e * aura;
   ctx.globalCompositeOperation = 'lighter';
   glow(SP.gold, cx, cy, U * 1.0, ee * (.22 + S.b * .12)); glow(SP.violet, cx, cy, U * 1.2, e * .12);
+  // tia nắng vàng xoay chậm phía sau, hiện lên khi đủ bốn lá
+  const rayA = e * sstep(3.4, 4.6, lu);
+  if (rayA > .01) for (let i = 0; i < 10; i++) {
+    const a = i / 10 * TAU - clk * .07, L = U * (.62 + .2 * Math.sin(i * 1.9 + clk * .5)), ex = Math.cos(a) * L, ey = Math.sin(a) * L, gr = ctx.createLinearGradient(cx, cy, cx + ex, cy + ey);
+    gr.addColorStop(0, `rgba(255,232,160,${.2 * rayA})`); gr.addColorStop(1, 'rgba(255,232,160,0)'); ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(a - .05) * L, cy + Math.sin(a - .05) * L); ctx.lineTo(cx + Math.cos(a + .05) * L, cy + Math.sin(a + .05) * L); ctx.closePath(); ctx.fill();
+  }
   // cuống mảnh
   const gs = easeOut(sstep(.1, 1.4, lu)); ctx.globalAlpha = e * .8; ctx.strokeStyle = 'rgba(255,238,205,.55)'; ctx.lineWidth = 1.4; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.moveTo(cx, cy); ctx.quadraticCurveTo(cx - R * .1, cy + R * .9 * gs, cx - R * .45 * gs, cy + R * 1.55 * gs); ctx.stroke();
@@ -846,19 +995,34 @@ function drawClover(lu, e) {
     ctx.save(); ctx.translate(cx, cy); ctx.rotate((deg + 90) * Math.PI / 180);
     const g = ctx.createLinearGradient(0, 0, 0, -R); g.addColorStop(0, 'rgba(30,150,80,.2)'); g.addColorStop(1, `rgba(70,205,125,${.55 * p * e})`);
     ctx.globalAlpha = 1; ctx.beginPath(); for (let j = 0; j <= cnt && j < CLV.length; j++) { const q = CLV[j]; j ? ctx.lineTo(q[0] * R, q[1] * R) : ctx.moveTo(q[0] * R, q[1] * R); } if (p >= 1) ctx.closePath(); ctx.fillStyle = g; ctx.globalCompositeOperation = 'source-over'; ctx.fill(); ctx.globalCompositeOperation = 'lighter';
+    if (p >= 1) { // vệt sáng bóng loáng quét dọc theo từng chiếc lá
+      const m = ((clk * .55 + i * .22) % 2) - .5, sg = ctx.createLinearGradient(0, 0, 0, -R);
+      sg.addColorStop(clamp(m - .2), 'rgba(255,255,255,0)'); sg.addColorStop(clamp(m), `rgba(225,255,235,${.5 * e})`); sg.addColorStop(clamp(m + .2), 'rgba(255,255,255,0)'); ctx.fillStyle = sg; ctx.fill();
+    }
     ctx.strokeStyle = '#ffeacb'; ctx.lineWidth = 1; ctx.globalAlpha = e * .45 * (.75 + .5 * S.b); ctx.stroke();
     ctx.globalAlpha = e * .25; ctx.beginPath(); ctx.moveTo(0, -R * .05); ctx.lineTo(0, -R * .72); ctx.stroke();
     for (let j = 0; j < cnt && j < CLV.length; j++) { const q = CLV[j], tw = .7 + .3 * Math.sin(clk * 2.6 + j + i), big = j % 5 === 0;
       glow(SP.gold, q[0] * R, q[1] * R, (big ? 11 : 7) * (1 + S.bp * .5) * tw, e * .85); ctx.globalAlpha = e; ctx.fillStyle = '#fffaf0'; const s = big ? 2.6 : 1.7; ctx.fillRect(q[0] * R - s / 2, q[1] * R - s / 2, s, s); }
+    if (p >= 1) sparkle(0, -R * .74, 8 * (1 + S.bp * .5), e * (.4 + .5 * Math.pow(Math.sin(clk * 2 + i * 1.6), 2)), clk * .4 + i);   // ánh lấp lánh ở khe mỗi lá
     ctx.restore();
   });
   const orbA = sstep(3.4, 5, lu) * e;
   for (const o of ORB) { const a = o.a + clk * o.sp, rr = R * o.rad * (1 + .06 * Math.sin(clk * 1.3 + o.ph)); sparkle(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr * .85, o.s * (1 + S.bp * .3), orbA * (.4 + .5 * Math.sin(clk * 2.5 + o.ph) ** 2), clk * .25 + o.ph); }
-  // khoảnh khắc đủ bốn lá: một vòng sáng mảnh lan ra + bụi vàng bay lên
+  // khoảnh khắc đủ bốn lá: vòng sáng lan ra, loé sáng chữ thập + bụi vàng bay lên
   const age = lu - 3.6;
-  if (age > 0 && age < 3) {
-    const k = age / 3; ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffe2a0'; ctx.globalAlpha = (1 - k) * .5 * e; ctx.beginPath(); ctx.arc(cx, cy, easeOut(k) * U * .55, 0, TAU); ctx.stroke();
+  if (age > 0 && age < 3.4) {
+    const k = age / 3.4; ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffe2a0';
+    for (const dl of [0, .3, .6]) { const a2 = (age - dl) / 3; if (a2 > 0 && a2 < 1) { ctx.globalAlpha = (1 - a2) * .5 * e; ctx.beginPath(); ctx.arc(cx, cy, easeOut(a2) * U * (.55 + dl * .4), 0, TAU); ctx.stroke(); } }
+    const fl = Math.sin(Math.min(1, age * 1.4) * Math.PI * .5) * (1 - k) * e, FL = U * .75 * easeOut(Math.min(1, age * 1.6));
+    for (const [dx, dy] of [[1, 0], [0, 1]]) { const g2 = ctx.createLinearGradient(cx - dx * FL, cy - dy * FL, cx + dx * FL, cy + dy * FL); g2.addColorStop(0, 'rgba(255,240,200,0)'); g2.addColorStop(.5, `rgba(255,246,220,${.85 * fl})`); g2.addColorStop(1, 'rgba(255,240,200,0)'); ctx.globalAlpha = 1; ctx.strokeStyle = g2; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx - dx * FL, cy - dy * FL); ctx.lineTo(cx + dx * FL, cy + dy * FL); ctx.stroke(); }
+    sparkle(cx, cy, U * .11 * (1 - k * .5), fl, clk * .3); glow(SP.white, cx, cy, U * .5, fl * .5);
     for (const p of BURST) { const d = p.v * (1 - Math.exp(-age * 1.5)) / 1.5 * U * 1.3; glow(SP.gold, cx + Math.cos(p.a) * d, cy + Math.sin(p.a) * d - age * U * .05, p.s, (1 - k) * e * .9); }
+  }
+  // mưa cỏ bốn lá may mắn rơi xuống
+  const la = sstep(3.8, 4.8, lu) * e;
+  if (la > .01) for (const p of LUCKY) {
+    const t = ((lu - 3.8) * p.v + p.ph) % 1, X = p.x * W + Math.sin(lu * p.w + p.ph * 9) * 18, Y = -U * .05 + t * (H + U * .1), a = Math.sin(Math.PI * t) * la * .95;
+    miniClover(X, Y, U * p.s, p.rot + lu * p.w * .6, a, p.hue);
   }
   if (lu >= 3.6 && lu < 5.2 && !S.insBurst) {
     S.insBurst = true; els.flash.style.transition = 'opacity .15s'; els.flash.style.opacity = .22;
@@ -914,7 +1078,7 @@ const FIN_CUES = [{ t: 1.6, d: 9999, pos: 'high', text: COPY.wishHint }];
 
 /* ══════════ ĐIỀU KHIỂN ══════════ */
 const els = { hint: $('hint'), mic: $('mic'), replay: $('replay'), start: $('start'), fin: $('final'), flash: $('flash'), dim: $('dim') };
-$('start-t').textContent = COPY.start; $('start-s').textContent = COPY.startSub;
+$('start-t').textContent = COPY.start;
 $('f-small').textContent = COPY.headline; $('f-name').textContent = NAMEL + ' ✦';
 if (TUOI > 0) { const a = $('f-age'); a.hidden = false; a.textContent = 'tuổi mới · ' + TUOI; }
 $('f-msg').textContent = fmt(cfg('loi') || COPY.final); $('f-sign').textContent = GUI ? '— ' + GUI : '';
@@ -966,9 +1130,10 @@ function replay() {
 document.addEventListener('pointerdown', e => {
   if (e.target.closest('.btn')) return;
   if (!S.started) { startShow(); return; }
-  // Trong phần trình chiếu, chạm màn hình không được tua slide.
+  // Trong phần trình chiếu, chạm màn hình không được tua slide: ở đoạn mở đầu, đôi mắt sẽ nhắn "đợi chút xíu đii…".
   // Chỉ ở cảnh cuối, chạm mới dùng để thổi nến (sau khi nến đã sáng đủ).
   if (S.finale) { doBlow(); return; }
+  SOUL.tap(e.clientX, e.clientY, audioTime());
 });
 els.replay.addEventListener('click', replay);
 els.mic.addEventListener('click', async () => {
@@ -990,6 +1155,182 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) audio.pause();
   else playAudioAt(audioTime());
 });
+
+/* ══════════ LINH HỒN — đôi mắt thay mình gửi lời chúc ══════════
+   Đôi mắt sống cùng bài nhạc: ngại ngùng (má hồng), nháy mắt, nhắm lại khi chuyển cảnh,
+   dõi theo ngọn lửa / chòm sao / pháo hoa, và nằm trên chiếc bánh ở cảnh cuối.
+   Bấm sớm khi chưa tới đoạn → hiện lời nhắn "đợi chút xíu đii…" */
+const SOUL = (() => {
+  const el = $('soul'), bub = $('soul-bub'), bt = $('soul-bt'), bd = $('soul-bd'), ba = $('soul-ba'), sh = $('soul-sh');
+  const safeTop = (() => { const d = document.createElement('div'); d.style.cssText = 'position:fixed;top:0;left:0;padding-top:env(safe-area-inset-top,0px);visibility:hidden'; document.body.appendChild(d); const v = d.offsetHeight; d.remove(); return v; })();
+  const Z = { x: 0, y: 0, e: 40, init: false, oL: 0, oR: 0, aL: 0, aR: 0, bl: 0, gx: 0, gy: 0, mouth: 'flat',
+    blinkAt: -9, nextBlink: 2.5, taps: 0, lastTap: -99, tapAt: -99, ptrT: -99, px: 0, py: 0, heartAt: -9, zAt: 0,
+    prevT: 0, prevRaw: 0, prevStarted: false, prevFinale: false, prevBlown: false, wakeAt: -99, blowAt: -99, nudge: '', timer: 0, big: 1, winkAt: -99, sayBlow: false };
+
+  /* ---- kịch bản theo giây của bài nhạc ---- */
+  const TRANS = [[20.3, 21.7], [55.4, 56.8], [65.4, 66.7], [83.6, 84.8], [92.8, 94.5]];  // (đồng hồ cảnh) nhắm mắt khi chuyển cảnh
+  const INS_TRANS = [[49.0, 50.2], [54.6, 55.8], [61.0, 62.2], [67.4, 68.6]];               // (giây thật) chuyển giữa các slide trái tim → hoa → cỏ bốn lá
+  const HAPPY = [[29.0, 32.2], [43.0, 46.8], [51.8, 55.2], [80.9, 83.4], [86.0, 90.5]];     // mắt cười ^ ^
+  const HAPPY_INS = [[50.2, 54.4], [65.0, 67.2]];
+  const WINKS = [[14.0, 1.3, 'r'], [45.2, 1.3, 'l'], [67.6, 1.5, 'r'], [78.6, 1.4, 'l']];   // nháy một bên
+  const WINKS_INS = [[62.4, 1.3, 'l']];
+  const SHY   = [[10.8, 13.8], [17.0, 20.0], [34.0, 38.5], [59.0, 62.5], [77.6, 80.0]];     // ngại, liếc đi chỗ khác
+  const BL = [[0, 0], [2, 0], [3.5, .25], [9.4, .4], [12, .85], [16, .5], [16.8, .7], [21, .5], [30, .8], [33, .85], [40, .6], [44, .95], [50, .5], [58, .9], [64, .55], [77, .9], [84, .4], [88, .7], [94, .5]];
+  const CUE_T = COPY.cues.map(c => c.t).concat([84.2]);
+  const INS_CUE_T = INS_CUES.map(c => INS0 + c.t);
+  const WAIT = ['đợi chút xíu đii', 'đợi chút nữa thui', 'xíu nữa thôi nè', 'sắp được rùi', '1 chút thuii'];
+  const WAIT_MANY = ['bấm hoài vậy nè', 'đã bảo đợi chút mà', 'hihi nóng lòng quá ha'];
+  const TAP_UNTIL = 21;   // chỉ nhắn "đợi chút…" ở đoạn mở đầu (trước khi sang cảnh chòm sao), các cảnh sau không nhắn gì
+
+  const bl = t => { let i = 0; while (i < BL.length - 2 && t > BL[i + 1][0]) i++; const a = BL[i], b = BL[i + 1]; return lerp(a[1], b[1], clamp((t - a[0]) / (b[0] - a[0]))); };
+  const inW = (t, w) => w.some(([a, b]) => t >= a && t < b);
+  const k = (dt, r) => 1 - Math.exp(-dt * r);
+
+  function cake(fT) {
+    const cw = clamp(Math.min(W * .74, H * .42), 170, 420), rise = easeOutBack(clamp(fT / 3.4)), baseY = H * .815 + (1 - rise) * H * .55;
+    return { x: W / 2, y: baseY - cw * .125, e: cw * .105, cw, baseY };
+  }
+  function flamePos(t) {
+    const cx = W / 2, y0 = H * .64, ch = U * .21, out = sstep(2.6, 6.2, t), wickY = y0 - ch + out * U * .07;
+    const kk = easeInOut(sstep(3.0, 9.4, t));
+    return [cx + Math.sin(kk * Math.PI) * U * .1, lerp(wickY, H * .115, kk)];
+  }
+  function gazeTarget(t, fT, inIns, u) {
+    const cx = W / 2;
+    if (clk - Z.ptrT < 2.2) return [Z.px, Z.py];
+    if (!S.started) return [cx + Math.sin(clk * .8) * W * .2, H * .62];
+    if (S.finale) {
+      const g = cake(fT);
+      if (S.blown) {
+        const f = flashes[flashes.length - 1]; if (f && clk - f.t < 1.6) return [f.x, f.y];
+        const r = rockets[0]; if (r) return [r.tx, r.ty];
+        return [cx + Math.sin(clk * .7) * W * .3, H * .25];
+      }
+      if (fT < LIT_DONE) return [cx, g.baseY - g.cw * .62];
+      return [cx + Math.sin(clk * .6) * W * .08, H * .5];
+    }
+    if (inIns) return u < 5.6 ? [cx, H * .6] : u < 12 ? [cx, H * .56] : [cx, H * .53];
+    if (t < 9.4) return flamePos(t);
+    if (t < 21) return [cx + Math.sin(clk * .5) * W * .12, H * .13];
+    if (t < 49.4) return [cx + Math.sin(clk * .45) * W * .22, H * .4];
+    if (t >= 63 && t < 75) return [W * .78, H * .3];
+    if (t < 80) return [cx + Math.sin(clk * .55) * W * .34, H * .45 + Math.sin(clk * .3) * H * .15];
+    const f = flashes[flashes.length - 1]; if (f && clk - f.t < 1.6) return [f.x, f.y];
+    return [cx + Math.sin(clk * .7) * W * .3, H * .3];
+  }
+
+  /* ---- hiệu ứng nhỏ & lời nhắn ---- */
+  function spawn(ch, col) {
+    if (el.querySelectorAll('.fx').length > 8) return;
+    const s = document.createElement('span'); s.className = 'fx'; s.textContent = ch;
+    s.style.cssText = `--sx:${(rnd() - .5) * Z.e * 2.6}px;--sy:${-Z.e * .3}px;--dx:${(rnd() - .5) * Z.e * 1.2}px;--dy:${-Z.e * (1.3 + rnd())}px;color:${col};font-size:${Math.max(12, Z.e * .42)}px`;
+    el.appendChild(s); setTimeout(() => s.remove(), 1900);
+  }
+  function say(text, ms, arrow, dots) {
+    bt.textContent = text; ba.style.display = arrow ? '' : 'none'; bd.style.display = dots ? '' : 'none';
+    bub.classList.add('show'); clearTimeout(Z.timer);
+    if (ms) Z.timer = setTimeout(() => { if (!Z.nudge) bub.classList.remove('show'); }, ms);
+  }
+  function hideBub() { Z.nudge = ''; clearTimeout(Z.timer); bub.classList.remove('show'); }
+  function blink() { Z.blinkAt = clk; }
+
+  function tap(x, y, raw) {
+    if (!S.started || S.finale || raw >= TAP_UNTIL) return;
+    Z.px = x; Z.py = y; Z.ptrT = clk;
+    Z.taps = clk - Z.lastTap < 7 ? Z.taps + 1 : 1; Z.lastTap = clk; Z.tapAt = clk;
+    sh.classList.remove('shake'); void sh.offsetWidth; sh.classList.add('shake');
+    let dots = true, msg;
+    if (Z.taps >= 6) { msg = WAIT_MANY[(Z.taps - 6) % 3]; dots = Z.taps % 3 !== 0; }
+    else msg = WAIT[(Z.taps - 1) % WAIT.length];
+    say(msg, 2000, false, dots);
+    if (Z.taps % 2 === 0) spawn('♥', '#ff8ab8');
+  }
+  addEventListener('pointermove', e => { Z.px = e.clientX; Z.py = e.clientY; Z.ptrT = clk; });
+
+  /* ---- cập nhật mỗi khung hình ---- */
+  function update(dt, T, raw, fT, inIns) {
+    const started = S.started, fin = S.finale, blown = S.blown, t = fin ? 1000 : T, u = raw - INS0;
+    if (started && !Z.prevStarted) { Z.wakeAt = clk; hideBub(); }
+    if (!started && Z.prevStarted) { Z.wakeAt = -99; }
+    if (blown && !Z.prevBlown) { Z.blowAt = clk; Z.sayBlow = true; hideBub(); }
+    if (!fin && Z.prevFinale) { hideBub(); Z.sayBlow = false; }
+    if (blown && Z.sayBlow && clk - Z.blowAt > 1.3) { Z.sayBlow = false; say(fmt('{xung} gửi {ho} nè ♥'), 2800, false, false); }
+    if (Z.prevT - t > 1) Z.nextBlink = clk + 1;                                   // xem lại từ đầu
+    for (const c of CUE_T) if (!fin && Z.prevT < c && t >= c && t - Z.prevT < 1) blink();   // chớp mắt khi chữ mới hiện
+    for (const c of INS_CUE_T) if (!fin && Z.prevRaw < c && raw >= c && raw - Z.prevRaw < 1) blink();
+    if (clk > Z.nextBlink) { if (started) blink(); Z.nextBlink = clk + 2.4 + rnd() * 3; }
+    Z.prevStarted = started; Z.prevFinale = fin; Z.prevBlown = blown; Z.prevT = t; Z.prevRaw = raw;
+
+    /* trạng thái mong muốn */
+    let o = started ? sstep(0, .5, clk - Z.wakeAt) : 0, al = 0, ar = 0, mouth = 'omega', shy = false, happy = false, blT = 0;
+    if (!started) { mouth = 'flat'; if (clk > Z.zAt) { Z.zAt = clk + 1.7; spawn('z', '#cfffff'); } }
+    else if (!fin) {
+      if (inIns) {
+        if (inW(raw, INS_TRANS)) o = 0;
+        happy = inW(raw, HAPPY_INS); shy = u >= 5.6 && u < 12;                       // cảnh hoa: ngại ngùng ngắm bông hoa
+        for (const [a, d, s] of WINKS_INS) if (raw >= a && raw < a + d) { if (s === 'l') al = 1; else ar = 1; }
+        blT = u >= 5.6 && u < 12 ? .95 : .7;
+      } else {
+        if (inW(t, TRANS)) o = 0;
+        happy = inW(t, HAPPY); shy = inW(t, SHY);
+        for (const [a, d, s] of WINKS) if (t >= a && t < a + d) { if (s === 'l') al = 1; else ar = 1; }
+        blT = bl(t);
+      }
+    } else {
+      blT = fT > LIT_DONE ? .95 : .5;
+      if (fT < .9) o = 0;
+      if (!blown) {
+        if (fT >= LIT_DONE && fT < LIT_DONE + 3.2) o = 0;                          // nhắm mắt ước một điều
+        if (S.micLvl > .1) { o = Math.min(o, .3); mouth = 'o'; }
+      } else {
+        const b = clk - S.bClk; blT = 1;
+        if (b < 1.0) { o = 0; mouth = 'o'; }                                       // chu môi thổi
+        else if (b < 4.8) { happy = true; }
+        else { blT = .75; const ph = b % 7; if (ph > 5.4 && ph < 6.6) ar = 1; }
+      }
+    }
+    if (Z.winkAt > 0 && clk - Z.winkAt < .6) ar = 1;
+    if (clk - Z.tapAt < .9 && started) { o = Math.min(o, .45); mouth = 'o'; blT = Math.min(1, blT + .25); }
+    if (happy) { al = 1; ar = 1; mouth = 'smile'; }
+    if (started && clk - Z.heartAt > 2.4 && blT > .8 && Z.oL > .5) { Z.heartAt = clk; spawn('♥', '#ff8ab8'); }
+
+    const p = (clk - Z.blinkAt) / .22, bAmt = p < 0 || p > 1 ? 0 : p < .4 ? p / .4 : 1 - (p - .4) / .6;
+    const tgtO = o * (1 - bAmt * .95);
+    Z.oL += (tgtO - Z.oL) * k(dt, tgtO < Z.oL ? 28 : 15); Z.oR = Z.oL;
+    Z.aL += (al - Z.aL) * k(dt, 18); Z.aR += (ar - Z.aR) * k(dt, 18);
+    Z.bl += (blT - Z.bl) * k(dt, 3);
+    Z.mouth = mouth;
+
+    /* vị trí & kích cỡ */
+    let tx, ty, te;
+    if (!started) { te = clamp(U * .1, 36, 64); tx = W / 2; ty = H * .74; }
+    else if (fin) { const g = cake(fT); tx = g.x; ty = g.y; te = g.e; }
+    else { Z.big = lerp(Z.big, (t >= 84.2 || (inIns && u >= 5.6 && u < 12)) ? 1.14 : 1, k(dt, 2)); te = clamp(U * .085, 32, 60) * Z.big; tx = W / 2; ty = Math.max(H * .065, safeTop + te * .9 + 8); }
+    if (!Z.init) { Z.x = tx; Z.y = ty; Z.e = te; Z.init = true; }
+    const m = fin ? 3.2 : 2.4;
+    Z.x += (tx - Z.x) * k(dt, m); Z.y += (ty - Z.y) * k(dt, m); Z.e += (te - Z.e) * k(dt, m);
+
+    /* ánh nhìn */
+    const [gx0, gy0] = gazeTarget(t, fT, inIns, u); let dx = gx0 - Z.x, dy = gy0 - Z.y; const d = Math.hypot(dx, dy) || 1, kk = Math.min(1, d / (U * .3));
+    let gx = dx / d * kk * Z.e * .32 + Math.sin(clk * 1.3) * Z.e * .02, gy = dy / d * kk * Z.e * .26;
+    if (shy) { gx = -Z.e * .3; gy = Z.e * .16; }
+    Z.gx += (gx - Z.gx) * k(dt, 8); Z.gy += (gy - Z.gy) * k(dt, 8);
+
+    /* ghi ra DOM */
+    el.style.transform = `translate(${Z.x.toFixed(1)}px,${Z.y.toFixed(1)}px)`;
+    el.style.fontSize = Z.e.toFixed(1) + 'px';
+    const s = el.style;
+    s.setProperty('--oL', Z.oL.toFixed(3)); s.setProperty('--oR', Z.oR.toFixed(3));
+    s.setProperty('--aL', Z.aL.toFixed(3)); s.setProperty('--aR', Z.aR.toFixed(3));
+    s.setProperty('--bl', Z.bl.toFixed(3));
+    s.setProperty('--gx', Z.gx.toFixed(1) + 'px'); s.setProperty('--gy', Z.gy.toFixed(1) + 'px');
+    s.setProperty('--bob', (-S.bp * Z.e * .06).toFixed(1) + 'px');
+    s.setProperty('--gl', (1 + S.bp * .55 + S.b * .25).toFixed(2));
+    s.setProperty('--bt', (Z.e * 1.9).toFixed(1) + 'px');
+    if (el.dataset.m !== Z.mouth) el.dataset.m = Z.mouth;
+  }
+  return { update, tap };
+})();
 
 /* ══════════ VÒNG LẶP ══════════ */
 let fpsAcc = 0, fpsN = 0;
@@ -1032,6 +1373,7 @@ function frame(now) {
     if (S.blown && clk > S.nextAuto && !document.hidden) { S.nextAuto = clk + 1.4 + rnd() * 1.8; const types = ['peony', 'ring', 'heart', 'double', 'willow']; launch(.15 + rnd() * .7, .14 + rnd() * .2, types[Math.floor(rnd() * 5)], [340, 40, 190, 280, 20, 320][Math.floor(rnd() * 6)]); if (rnd() < .4) spawnConfetti(16); }
   }
   updateFireworks(dt); updateConfetti(dt);
+  SOUL.update(dt, T, taRaw, fT, inIns);
   ctx.globalAlpha = 1;
   if (!S.finale) { updateCues(MAIN_CUES, T, 'm'); updateCues(INS_CUES, inIns ? taRaw - INS0 : -1, 'i'); } else { updateCues(MAIN_CUES, 9999, 'm'); updateCues(INS_CUES, -1, 'i'); updateCues(FIN_CUES, fT, 'f'); }
 }
